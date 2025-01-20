@@ -11,7 +11,7 @@ public static class Query
     public record LoginGoolgeTest : IQuery<string>;
     public record LogoutGoogle :IQuery<string>;
     
-    public record Login(string EmailOrUserName, string Password) : IQuery<Response.Authenticated>, ICacheable
+    public record Login(string Email, string Password) : IQuery<Response.Authenticated>, ICacheable
     {
         public bool BypassCache => true;
         public string CacheKey {
@@ -19,7 +19,7 @@ public static class Query
             {
                 var builder = new StringBuilder();
                 builder.Append($"{nameof(Login)}");
-                builder.Append($"-UserAccount:{EmailOrUserName}");
+                builder.Append($"-UserAccount:{Email}");
                 return builder.ToString();
             }
         }

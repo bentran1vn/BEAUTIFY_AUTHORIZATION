@@ -8,7 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.0.5" />
+      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.0.10" />
     </ItemGroup>
 
     <ItemGroup>
