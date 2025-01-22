@@ -1,4 +1,3 @@
-using BEAUTIFY_AUTHORIZATION.API.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.API.Middlewares;
 using BEAUTIFY_AUTHORIZATION.APPLICATION.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE.DependencyInjection.Extensions;

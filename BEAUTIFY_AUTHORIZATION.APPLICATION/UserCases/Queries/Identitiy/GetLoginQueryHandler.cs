@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
@@ -13,10 +13,10 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ICacheService _cacheService;
-    private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<Users, Guid> _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<Users, Guid> userRepository, IPasswordHasherService passwordHasherService)
     {
         _jwtTokenService = jwtTokenService;
         _cacheService = cacheService;

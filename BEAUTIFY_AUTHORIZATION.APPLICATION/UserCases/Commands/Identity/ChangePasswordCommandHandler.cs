@@ -1,19 +1,19 @@
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 
 public class ChangePasswordCommandHandler : ICommandHandler<Command.ChangePasswordCommand>
 {
-    private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<Users, Guid> _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
     private readonly ICacheService _cacheService;
 
-    public ChangePasswordCommandHandler(IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, ICacheService cacheService)
+    public ChangePasswordCommandHandler(IRepositoryBase<Users, Guid> userRepository, IPasswordHasherService passwordHasherService, ICacheService cacheService)
     {
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;

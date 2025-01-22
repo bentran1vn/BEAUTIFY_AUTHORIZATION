@@ -1,5 +1,5 @@
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using Microsoft.EntityFrameworkCore;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 
 namespace BEAUTIFY_AUTHORIZATION.PERSISTENCE;
 
@@ -13,5 +13,5 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder) =>
         builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
-    public DbSet<User> Users { get; set; }
+    public DbSet<Users> Users { get; set; }
 }

@@ -1,18 +1,18 @@
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 
 public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 {
-    private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<Users, Guid> _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public RegisterCommandHandler(IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public RegisterCommandHandler(IRepositoryBase<Users, Guid> userRepository, IPasswordHasherService passwordHasherService)
     {
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
@@ -31,7 +31,7 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 
         var hashingPassword = _passwordHasherService.HashPassword(request.Password);
         
-        User newUser = new User
+        Users newUser = new Users
         {
             Email = request.Email,
             Password = hashingPassword,

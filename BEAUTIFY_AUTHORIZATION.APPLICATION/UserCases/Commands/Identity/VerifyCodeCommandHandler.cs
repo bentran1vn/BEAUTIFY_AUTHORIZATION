@@ -1,10 +1,10 @@
 using System.Security.Claims;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
@@ -13,9 +13,9 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 {
     private readonly ICacheService _cacheService;
     private readonly IJwtTokenService _jwtTokenService;
-    private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<Users, Guid> _userRepository;
 
-    public VerifyCodeCommandHandler(ICacheService cacheService, IJwtTokenService jwtTokenService, IRepositoryBase<User, Guid> userRepository)
+    public VerifyCodeCommandHandler(ICacheService cacheService, IJwtTokenService jwtTokenService, IRepositoryBase<Users, Guid> userRepository)
     {
         _cacheService = cacheService;
         _jwtTokenService = jwtTokenService;

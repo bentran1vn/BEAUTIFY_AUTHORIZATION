@@ -1,9 +1,9 @@
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Entities;
 using Microsoft.Extensions.Caching.Distributed;
 
 
@@ -13,9 +13,9 @@ public class ForgotPasswordCommandHandler : ICommandHandler<Command.ForgotPasswo
 {
     // private readonly IMailService _mailService;
     private readonly ICacheService _cacheService;
-    private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<Users, Guid> _userRepository;
 
-    public ForgotPasswordCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository)
+    public ForgotPasswordCommandHandler(ICacheService cacheService, IRepositoryBase<Users, Guid> userRepository)
     {
         // _mailService = mailService;
         _cacheService = cacheService;
