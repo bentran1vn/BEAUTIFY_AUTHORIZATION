@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
@@ -6,6 +5,7 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Security.Claims;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 
@@ -13,9 +13,9 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 {
     private readonly ICacheService _cacheService;
     private readonly IJwtTokenService _jwtTokenService;
-    private readonly IRepositoryBase<Users, Guid> _userRepository;
+    private readonly IRepositoryBase<User, Guid> _userRepository;
 
-    public VerifyCodeCommandHandler(ICacheService cacheService, IJwtTokenService jwtTokenService, IRepositoryBase<Users, Guid> userRepository)
+    public VerifyCodeCommandHandler(ICacheService cacheService, IJwtTokenService jwtTokenService, IRepositoryBase<User, Guid> userRepository)
     {
         _cacheService = cacheService;
         _jwtTokenService = jwtTokenService;
@@ -27,12 +27,12 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
         var user =
             await _userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken);
-        
+
         if (user is null)
         {
             throw new Exception("User Not Existed !");
         }
-        
+
         var code = await _cacheService.GetAsync<string>(
             $"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{request.Email}", cancellationToken);
 
@@ -40,12 +40,12 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
         {
             return Result.Failure(new Error("500", "Verify Code is Wrong !"));
         }
-        
+
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.ToString()),
-            new Claim("Role", user.Role.ToString()),
+            new (ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Role, user.Role.ToString()),
+            new("Role", user.Role.ToString()),
             new Claim("UserId", user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Email),
             new Claim(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString())
@@ -60,13 +60,13 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15)
         };
-        
+
         var slidingExpiration = 10;
         var absoluteExpiration = 15;
         var options = new DistributedCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
-        
+
         await _cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options, cancellationToken);
 
         return Result.Success(response);

@@ -1,5 +1,4 @@
-﻿using System.Security.Claims;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
+﻿using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.PRESENTATION.Abstractions;
 using Carter;
 using MediatR;
@@ -8,11 +7,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using System.Security.Claims;
 
 namespace BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity;
 
-using QueryV1 = CONTRACT.Services.Identity.Query;
 using CommandV1 = CONTRACT.Services.Identity.Command;
+using QueryV1 = CONTRACT.Services.Identity.Query;
 
 public class AuthApi : ApiEndpoint, ICarterModule
 {
@@ -35,10 +35,10 @@ public class AuthApi : ApiEndpoint, ICarterModule
     }
 
 
-    public static async Task<IResult> LoginGoogleTest(ISender sender , QueryV1.LoginGoolgeTest login)
+    public static async Task<IResult> LoginGoogleTest(ISender sender, QueryV1.LoginGoolgeTest login)
     {
 
-       var result = await sender.Send(login);
+        var result = await sender.Send(login);
 
         if (result.IsFailure)
             return HandlerFailure(result);
@@ -60,11 +60,11 @@ public class AuthApi : ApiEndpoint, ICarterModule
             return HandlerFailure(result);
         return Results.Ok(result);
     }
-    
+
     public static async Task<IResult> LoginV1(ISender sender, [FromBody] QueryV1.Login login)
     {
         var result = await sender.Send(login);
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -74,7 +74,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
     {
         //var accessToken = await context.GetTokenAsync("access_token");
         var result = await sender.Send(query);
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
@@ -83,54 +83,54 @@ public class AuthApi : ApiEndpoint, ICarterModule
     public static async Task<IResult> LogoutV1(ISender sender, HttpContext context, IJwtTokenService jwtTokenService)
     {
         var accessToken = await context.GetTokenAsync("access_token");
-        var (claimPrincipal, _)  = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
+        var (claimPrincipal, _) = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
         var email = claimPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
-        
+
         var result = await sender.Send(new CommandV1.LogoutCommand(email));
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Results.Ok(result);
     }
-    
+
     public static async Task<IResult> ForgotPasswordV1(ISender sender, [FromBody] CommandV1.ForgotPasswordCommand command)
     {
         var result = await sender.Send(command);
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Results.Ok(result);
     }
-    
+
     public static async Task<IResult> VerifyCodeV1(ISender sender, [FromBody] CommandV1.VerifyCodeCommand command)
     {
         var result = await sender.Send(command);
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Results.Ok(result);
     }
-    
+
     public static async Task<IResult> ChangePasswordV1(ISender sender, HttpContext context, IJwtTokenService jwtTokenService, [FromBody] CommandV1.ChangePasswordCommand command)
     {
         var accessToken = await context.GetTokenAsync("access_token");
-        var (claimPrincipal, _)  = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
+        var (claimPrincipal, _) = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
         var email = claimPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
         var result = await sender.Send(new CommandV1.ChangePasswordCommand(email, command.NewPassword));
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 
         return Results.Ok(result);
     }
-    
+
     public static async Task<IResult> RegisterV1(ISender sender, [FromBody] CommandV1.RegisterCommand command)
     {
         var result = await sender.Send(command);
-        
+
         if (result.IsFailure)
             return HandlerFailure(result);
 

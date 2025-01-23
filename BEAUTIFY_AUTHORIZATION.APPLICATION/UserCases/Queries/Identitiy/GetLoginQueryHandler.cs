@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
@@ -6,6 +5,7 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Security.Claims;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
 
@@ -13,10 +13,10 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ICacheService _cacheService;
-    private readonly IRepositoryBase<Users, Guid> _userRepository;
+    private readonly IRepositoryBase<User, Guid> _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<Users, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService)
     {
         _jwtTokenService = jwtTokenService;
         _cacheService = cacheService;
@@ -30,7 +30,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var user =
             await _userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken) ?? throw new Exception("User Not Existed !");
-        
+
         if (!_passwordHasherService.VerifyPassword(request.Password, user.Password))
         {
             throw new UnauthorizedAccessException("UnAuthorize !");

@@ -7,22 +7,22 @@ public static class Command
     public record ForgotPasswordCommand(
         string Email
     ) : ICommand;
-    
+
     public record RegisterCommand(
         string Email, string Password, string FirstName, string LastName,
-        string PhoneNumber,string DateOfBirth, string Address
+        string PhoneNumber, string DateOfBirth, string Address
     ) : ICommand;
-    
+
     public record ChangePasswordCommand(
         string Email,
         string NewPassword
     ) : ICommand;
-    
+
     public record VerifyCodeCommand(
         string Email,
         string Code
     ) : ICommand;
-    
+
     public record LogoutCommand(
         string UserAccount
     ) : ICommand;

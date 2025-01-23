@@ -9,10 +9,10 @@ namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 
 public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 {
-    private readonly IRepositoryBase<Users, Guid> _userRepository;
+    private readonly IRepositoryBase<User, Guid> _userRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public RegisterCommandHandler(IRepositoryBase<Users, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public RegisterCommandHandler(IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService)
     {
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
@@ -23,15 +23,15 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
         var userExisted =
             await _userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken);
-        
+
         if (userExisted is not null)
         {
             throw new Exception("User Existed !");
         }
 
         var hashingPassword = _passwordHasherService.HashPassword(request.Password);
-        
-        Users newUser = new Users
+
+        User newUser = new()
         {
             Email = request.Email,
             Password = hashingPassword,
@@ -42,7 +42,7 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
             Address = request.Address,
             Status = 0,
         };
-        
+
         _userRepository.Add(newUser);
 
         return Result.Success(newUser);

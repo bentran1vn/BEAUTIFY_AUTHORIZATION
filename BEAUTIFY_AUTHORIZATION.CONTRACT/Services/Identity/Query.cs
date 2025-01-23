@@ -1,6 +1,6 @@
-﻿using System.Text;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
+﻿using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
+using System.Text;
 
 namespace BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 
@@ -9,12 +9,13 @@ public static class Query
     public record LoginGoogle(string GoogleToken) : IQuery<Response.Authenticated>;
 
     public record LoginGoolgeTest : IQuery<string>;
-    public record LogoutGoogle :IQuery<string>;
-    
+    public record LogoutGoogle : IQuery<string>;
+
     public record Login(string Email, string Password) : IQuery<Response.Authenticated>, ICacheable
     {
         public bool BypassCache => true;
-        public string CacheKey {
+        public string CacheKey
+        {
             get
             {
                 var builder = new StringBuilder();

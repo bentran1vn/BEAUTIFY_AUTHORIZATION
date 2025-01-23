@@ -10,10 +10,10 @@ namespace BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE.DependencyInjection.Extensions;
 public static class ServiceCollectionExtensions
 {
     public static void AddServicesInfrastructure(this IServiceCollection services)
-        => services.AddTransient<IJwtTokenService, JwtTokenService >()
+        => services.AddTransient<IJwtTokenService, JwtTokenService>()
             .AddTransient<IPasswordHasherService, PasswordHasherService>()
             .AddTransient<ICacheService, CacheService>();
-    
+
     // Configure Redis
     public static void AddRedisInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {

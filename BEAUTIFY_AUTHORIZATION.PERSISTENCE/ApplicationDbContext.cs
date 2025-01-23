@@ -13,5 +13,5 @@ public class ApplicationDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder) =>
         builder.ApplyConfigurationsFromAssembly(AssemblyReference.Assembly);
 
-    public DbSet<Users> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 }
