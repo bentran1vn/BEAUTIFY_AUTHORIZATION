@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.0.10" />
-      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.7" />
+      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.0.25" />
+      <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
     </ItemGroup>
 
 </Project>

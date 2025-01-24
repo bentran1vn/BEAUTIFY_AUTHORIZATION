@@ -1,6 +1,6 @@
-﻿using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Exceptions;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Exceptions;
-using System.Text.Json;
+﻿using System.Text.Json;
+using BEAUTIFY_AUTHORIZATION.API.Exceptions;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Exceptions;
 
 namespace BEAUTIFY_AUTHORIZATION.API.Middlewares;
 

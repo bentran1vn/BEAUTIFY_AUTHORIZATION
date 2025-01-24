@@ -479,3 +479,4 @@ Temporary Items
 
 BEAUTIFY_AUTHORIZATION.API/appsettings.json
 BEAUTIFY_AUTHORIZATION.API/appsettings.Development.json
+BEAUTIFY_AUTHORIZATION.PERSISTENCE/Migrations
