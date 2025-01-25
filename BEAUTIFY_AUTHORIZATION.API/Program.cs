@@ -3,6 +3,7 @@ using BEAUTIFY_AUTHORIZATION.APPLICATION.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.PERSISTENCE.DependencyInjection.Extensions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.API.DependencyInjection.Extensions;
+using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.INFRASTRUCTURE.DependencyInjection.Options;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.PERSISTENCE.DependencyInjection.Options;
 using Carter;
 using MicroElements.Swashbuckle.FluentValidation.AspNetCore;
@@ -51,6 +52,7 @@ builder.Services.AddRepositoryPersistence();
 // Infrastructure Layer
 builder.Services.AddServicesInfrastructure();
 builder.Services.AddRedisInfrastructure(builder.Configuration);
+builder.Services.ConfigureMailOptionsInfrastucture(builder.Configuration.GetSection(nameof(MailOption)));
 
 // API Layer
 builder.Services.AddJwtAuthenticationAPI(builder.Configuration);

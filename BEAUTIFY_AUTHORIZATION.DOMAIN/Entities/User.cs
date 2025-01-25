@@ -16,7 +16,7 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     public required string PhoneNumber { get; set; }
 
     public required DateOnly DateOfBirth { get; set; }
-    public required int Status { get; set; }
+    public required int Status { get; set; } // 0 Pending, 1 Active, 2 InActive
     public int FailedLoginAttempts { get; set; } = 0;
     public DateTimeOffset? LockoutEnd { get; set; }
     public bool EmailConfirmed { get; set; }
@@ -28,7 +28,7 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
 
     public virtual ICollection<UserClinic>? UserClinics { get; set; }
     public virtual ICollection<DoctorCertificate>? DoctorCertificates { get; set; }
-    public virtual ICollection<Conversation>? Conversations { get; set; }
+    // public virtual ICollection<Conversation>? Conversations { get; set; }
     public virtual ICollection<DoctorService>? DoctorServices { get; set; }
     public virtual ICollection<CustomerSchedule>? CustomerSchedules { get; set; }
     public virtual ICollection<Order>? Orders { get; set; }

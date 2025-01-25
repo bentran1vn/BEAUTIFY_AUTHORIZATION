@@ -20,7 +20,8 @@ public static class Command
 
     public record VerifyCodeCommand(
         string Email,
-        string Code
+        string Code,
+        int Type // 0 Register, 1 Forgot
     ) : ICommand;
 
     public record LogoutCommand(

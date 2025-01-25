@@ -12,8 +12,9 @@ public class Service : AggregateRoot<Guid>, IAuditableEntity
     [Column(TypeName = "decimal(18,2)")] public decimal? DiscountPrice { get; set; }
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
-    public Guid? PromotionId { get; set; }
-    public virtual Promotion Promotion { get; set; }
+    // public Guid? PromotionId { get; set; }
+    // public virtual Promotion Promotion { get; set; }
+    public virtual ICollection<Promotion>? Promotions { get; set; }
     public virtual ICollection<Procedure>? Procedures { get; set; }
     public virtual ICollection<CustomerSchedule>? CustomerSchedules { get; set; }
     public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
