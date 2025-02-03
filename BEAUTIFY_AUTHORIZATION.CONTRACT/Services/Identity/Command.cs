@@ -10,7 +10,7 @@ public static class Command
 
     public record RegisterCommand(
         string Email, string Password, string FirstName, string LastName,
-        string PhoneNumber, string DateOfBirth, string Address
+        string PhoneNumber, DateOnly DateOfBirth, string Address
     ) : ICommand;
 
     public record ChangePasswordCommand(
