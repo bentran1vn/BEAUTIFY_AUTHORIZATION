@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System.Security.Claims;
+using System.Text.Json;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 
 namespace BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity;
 
@@ -26,7 +29,33 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapPost("login_google_test", LoginGoogleTest);
         group1.MapGet("logout_google", LogoutGoogleV1).RequireAuthorization();
         group1.MapPost("login", LoginV1);
-        group1.MapPost("register", RegisterV1);
+        group1.MapPost("register", RegisterV1)
+            .WithName("Register")
+            .WithSummary("Registers a new user.")
+            .WithDescription("After Registration, User will receive a verify code through the email." +
+                             " After that use Verify Code with type = 0 for verify account.")
+            .WithOpenApi(operation => new(operation)
+                {
+                    RequestBody = new OpenApiRequestBody()
+                    {
+                        Content =
+                        {
+                            ["application/json"] = new OpenApiMediaType
+                            {
+                                Example = new OpenApiString(JsonSerializer.Serialize(new CommandV1.RegisterCommand(
+                                    "dung@gmail.com",
+                                    "Dungcao123@",
+                                    "Dung",
+                                    "Cao",
+                                    "+84983460123",
+                                    new DateOnly(2002, 11, 29),
+                                    "District 9, Thu Duc"
+                                )))
+                            }
+                        }
+                    }
+                }
+            );
         group1.MapPost("refresh_token", RefreshTokenV1);
         group1.MapPost("forgot_password", ForgotPasswordV1);
         group1.MapPost("verify_code", VerifyCodeV1);

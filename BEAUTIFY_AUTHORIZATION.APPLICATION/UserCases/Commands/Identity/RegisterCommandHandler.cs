@@ -45,7 +45,7 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
-                DateOfBirth = DateOnly.Parse(request.DateOfBirth),
+                DateOfBirth = request.DateOfBirth,
                 Address = request.Address,
                 Status = 0,
             };
@@ -80,9 +80,9 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
                 userExisted.LastName = request.LastName;
             }
 
-            if (!userExisted.DateOfBirth.Equals(DateOnly.Parse(request.DateOfBirth)))
+            if (!userExisted.DateOfBirth.Equals(request.DateOfBirth))
             {
-                userExisted.DateOfBirth = DateOnly.Parse(request.DateOfBirth);
+                userExisted.DateOfBirth = request.DateOfBirth;
             }
         }
         
