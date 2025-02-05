@@ -27,11 +27,16 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
     {
         var userExisted =
             await _userRepository.FindSingleAsync(x =>
-                x.Email.Equals(request.Email), cancellationToken);
-
+                x.Email.Equals(request.Email) || x.PhoneNumber.Equals(request.PhoneNumber), cancellationToken);
+        
         if (userExisted is not null && userExisted.Status == 1)
         {
             return Result.Failure(new Error("500", "Email already exists"));
+        }
+        
+        if (userExisted is not null && userExisted.Email != request.Email)
+        {
+            return Result.Failure(new Error("500", "Email not match with this phone number"));
         }
 
         if (userExisted is null)
@@ -40,6 +45,7 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 
             User newUser = new()
             {
+                Id = Guid.NewGuid(),
                 Email = request.Email,
                 Password = hashingPassword,
                 FirstName = request.FirstName,
@@ -58,11 +64,6 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
             if (hashingPassword != userExisted.Password)
             {
                 userExisted.Password = hashingPassword;
-            }
-
-            if (userExisted.PhoneNumber != request.PhoneNumber)
-            {
-                userExisted.PhoneNumber = request.PhoneNumber;
             }
 
             if (userExisted.Address != request.Address)
