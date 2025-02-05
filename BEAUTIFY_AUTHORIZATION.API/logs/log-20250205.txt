@@ -1,0 +1,33 @@
+2025-02-05 17:39:41.341 +07:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-02-05 17:39:46.216 +07:00 [ERR] 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-21f139796dbsm15121875ad.2 - gsmtp
+MailKit.Security.AuthenticationException: 535: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-21f139796dbsm15121875ad.2 - gsmtp
+ ---> MailKit.Net.Smtp.SmtpCommandException: 5.7.8 Username and Password not accepted. For more information, go to
+5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-21f139796dbsm15121875ad.2 - gsmtp
+   --- End of inner exception stack trace ---
+   at MailKit.Net.Smtp.SmtpClient.AuthenticateAsync(Encoding encoding, ICredentials credentials, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.INFRASTRUCTURE.Mail.MailService.SendMail(MailContent mailContent)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity.RegisterCommandHandler.Handle(RegisterCommand request, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/UserCases/Commands/Identity/RegisterCommandHandler.cs:line 99
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.TracingPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 35
+--- End of stack trace from previous location ---
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 38
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 31
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.PerformancePipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.ValidationPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity.AuthApi.RegisterV1(ISender sender, RegisterCommand command) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.PRESENTATION/APIs/Identity/AuthApi.cs:line 161
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BEAUTIFY_AUTHORIZATION.API.Middlewares.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.API/Middlewares/ExceptionHandlingMiddleware.cs:line 18
