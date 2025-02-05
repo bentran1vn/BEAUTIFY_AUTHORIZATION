@@ -1,18 +1,15 @@
-﻿namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 public class ClinicOnBoardingRequest : AggregateRoot<Guid>, IAuditableEntity
 {
-    public required string Name { get; set; }
-    public required string Email { get; set; }
-    public required string PhoneNumber { get; set; }
-    public required string Address { get; set; }
-    public required string TaxCode { get; set; }
-    public required string BusinessLicenseUrl { get; set; }
-    public required string OperatingLicenseUrl { get; set; }
-    public DateTimeOffset? OperatingLicenseExpiryDate { get; set; }
-    public string? Status { get; set; }
-    public string? Note { get; set; }
-
-
+    [MaxLength(50)] public int Status { get; set; } = 0;
+    // 0 Pending 1 Approve 2 Reject 3 Banned
+    [MaxLength(250)] public string? RejectReason { get; set; } 
+    public DateTimeOffset SendMailDate { get; set; }
+    public Guid ClinicId { get; set; }
+    public virtual Clinics? Clinic { get; set; }
+    
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

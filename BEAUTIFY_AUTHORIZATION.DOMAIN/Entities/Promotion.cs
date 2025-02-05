@@ -1,15 +1,16 @@
-﻿namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 public class Promotion : AggregateRoot<Guid>, IAuditableEntity
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string? ImageUrl { get; set; }
+    [MaxLength(100)] public required string Name { get; set; }
+    [MaxLength(250)] public string? ImageUrl { get; set; }
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
-    public string? Status { get; set; }
-    public double? Discount { get; set; }
+    [MaxLength(50)] public string? Status { get; set; }
+    public double? DiscountPercent { get; set; }
     public Guid? ServiceId { get; set; }
-    public virtual Service Service { get; set; }
+    public virtual Service? Service { get; set; }
     public bool IsActivated { get; set; } = false;
     public Guid? LivestreamRoomId { get; set; }
     public virtual LivestreamRoom? LivestreamRoom { get; set; }
