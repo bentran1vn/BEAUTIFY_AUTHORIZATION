@@ -1,10 +1,10 @@
-﻿namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 public class Category : AggregateRoot<Guid>, IAuditableEntity
 {
-    public required string Name { get; set; }
-    public string? Description { get; set; }
-    public string? ImageUrl { get; set; }
-    public bool IsActivated { get; set; } = false;
+    [MaxLength(100)] public required string Name { get; set; }
+    [MaxLength(250)] public string? Description { get; set; }
     public bool IsParent { get; set; } = false;
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
@@ -13,7 +13,9 @@ public class Category : AggregateRoot<Guid>, IAuditableEntity
 
     public virtual ICollection<Category> Children { get; set; } = [];
     public Guid? ClinicId { get; set; }
-    public virtual Clinic? Clinic { get; set; }
+    public virtual Clinics? Clinic { get; set; }
+
     public virtual ICollection<Service> Services { get; set; } = [];
-    public virtual ICollection<DoctorService>? DoctorServices { get; set; } = [];
+
+    public virtual ICollection<DoctorService>? DoctorServices { get; set; }
 }
