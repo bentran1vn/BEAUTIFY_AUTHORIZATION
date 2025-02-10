@@ -143,7 +143,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
         return Results.Ok(result);
     }
 
-    public static async Task<IResult> ChangePasswordV1(ISender sender, HttpContext context, IJwtTokenService jwtTokenService, [FromBody] CommandV1.ChangePasswordCommand command)
+    public static async Task<IResult> ChangePasswordV1(ISender sender, HttpContext context, IJwtTokenService jwtTokenService, [FromBody] CommandV1.ChangePasswordCommandBody command)
     {
         var accessToken = await context.GetTokenAsync("access_token");
         var (claimPrincipal, _) = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);

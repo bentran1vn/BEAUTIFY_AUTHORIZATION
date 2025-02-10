@@ -11,15 +11,15 @@ namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 
 public class ForgotPasswordCommandHandler : ICommandHandler<Command.ForgotPasswordCommand>
 {
-    // private readonly IMailService _mailService;
+    private readonly IMailService _mailService;
     private readonly ICacheService _cacheService;
     private readonly IRepositoryBase<User, Guid> _userRepository;
 
-    public ForgotPasswordCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository)
+    public ForgotPasswordCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IMailService mailService)
     {
-        // _mailService = mailService;
         _cacheService = cacheService;
         _userRepository = userRepository;
+        _mailService = mailService;
     }
 
     public async Task<Result> Handle(Command.ForgotPasswordCommand request, CancellationToken cancellationToken)
@@ -44,7 +44,17 @@ public class ForgotPasswordCommandHandler : ICommandHandler<Command.ForgotPasswo
 
         await _cacheService.SetAsync($"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{user.Email}", randomNumber, options, cancellationToken);
 
-        // await _mailService.SendMail(EmailExtensions.ForgotPasswordBody(randomNumber, $"{user.Firstname} {user.Lastname}", request.Email));
+        await _mailService.SendMail(new MailContent
+        {
+            To = request.Email,
+            Subject = $"Forgot Password Verify Code",
+            Body = $@"
+            <p>Dear {request.Email},</p>
+            <p>Your forgot password verify code is: {randomNumber}</p>
+            <p>You have 60 seconds for insert !</p>
+            ",
+           
+        });
 
         return Result.Success("Send Mail Successfully !");
     }
