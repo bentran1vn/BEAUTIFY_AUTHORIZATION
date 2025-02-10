@@ -1,3 +1,4 @@
+using BEAUTIFY_AUTHORIZATION.API.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.API.Middlewares;
 using BEAUTIFY_AUTHORIZATION.APPLICATION.DependencyInjection.Extensions;
 using BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE.DependencyInjection.Extensions;
@@ -55,7 +56,7 @@ builder.Services.AddRedisInfrastructure(builder.Configuration);
 builder.Services.ConfigureMailOptionsInfrastucture(builder.Configuration.GetSection(nameof(MailOption)));
 
 // API Layer
-builder.Services.AddJwtAuthenticationAPI(builder.Configuration);
+builder.Services.AddJwtAuthenticationAPI1(builder.Configuration);
 
 // Add Middleware => Remember using middleware
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
