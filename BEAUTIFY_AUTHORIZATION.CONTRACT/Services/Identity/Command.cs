@@ -17,6 +17,10 @@ public static class Command
         string Email,
         string NewPassword
     ) : ICommand;
+    
+    public record ChangePasswordCommandBody(
+        string NewPassword
+    );
 
     public record VerifyCodeCommand(
         string Email,

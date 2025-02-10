@@ -13,11 +13,13 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 {
     private readonly ICacheService _cacheService;
     private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IJwtTokenService _jwtTokenService;
 
-    public VerifyCodeCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository)
+    public VerifyCodeCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IJwtTokenService jwtTokenService)
     {
         _cacheService = cacheService;
         _userRepository = userRepository;
+        _jwtTokenService = jwtTokenService;
     }
 
     public async Task<Result> Handle(Command.VerifyCodeCommand request, CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 
         if (user is null)
         {
-            throw new Exception("User Not Existed !");
+            return Result.Failure(new Error("400", "User Not Existed !"));
         }
 
         string? code = null;
@@ -51,8 +53,41 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             return Result.Failure(new Error("500", "Verify Code is Wrong !"));
         }
 
-        user.Status = 1;
+        if (request.Type == 0)
+        {
+            user.Status = 1;
+            return Result.Success("Verify Successfully !");
+        };
+        
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user?.Role?.ToString() ?? "UserRole"),
+            new Claim("Role", user?.Role?.ToString() ?? "UserRole"),
+            new Claim("UserId", user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+            new Claim(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString())
+        };
 
-        return Result.Success("Verify Successfully !");
+        var accessToken = _jwtTokenService.GenerateAccessToken(claims);
+        var refreshToken = _jwtTokenService.GenerateRefreshToken();
+
+        var response = new Response.Authenticated()
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken,
+            RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15)
+        };
+        
+        var slidingExpiration = 10;
+        var absoluteExpiration = 15;
+        var options = new DistributedCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpiration))
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
+        
+        await _cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options, cancellationToken);
+
+        return Result.Success(response);
     }
 }
