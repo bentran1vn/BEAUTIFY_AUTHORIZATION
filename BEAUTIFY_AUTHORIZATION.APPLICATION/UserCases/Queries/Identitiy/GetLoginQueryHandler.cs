@@ -1,3 +1,4 @@
+using System.Globalization;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
@@ -40,11 +41,11 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, request.Email),
-            new(ClaimTypes.Role, "1"),
-            new("Role","1"),
+            new(ClaimTypes.Role, user.Role?.Name?? "Customer"),
+            new("Role",user.Role?.Name),
             new("UserId", user.Id.ToString()),
             new(ClaimTypes.Name, request.Email),
-            new(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString()),
+            new(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString(CultureInfo.InvariantCulture)),
             new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
 

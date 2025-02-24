@@ -4,36 +4,29 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
+using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Constrants;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
-
-public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
+public class RegisterCommandHandler(
+    IRepositoryBase<User, Guid> userRepository,
+    IPasswordHasherService passwordHasherService,
+    IMailService mailService,
+    ICacheService cacheService,
+    IRepositoryBase<Role, Guid> roleRepository)
+    : ICommandHandler<Command.RegisterCommand>
 {
-    private readonly IRepositoryBase<User, Guid> _userRepository;
-    private readonly IPasswordHasherService _passwordHasherService;
-    private readonly IMailService _mailService;
-    private readonly ICacheService _cacheService;
-
-    public RegisterCommandHandler(IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, IMailService mailService, ICacheService cacheService)
-    {
-        _userRepository = userRepository;
-        _passwordHasherService = passwordHasherService;
-        _mailService = mailService;
-        _cacheService = cacheService;
-    }
-
     public async Task<Result> Handle(Command.RegisterCommand request, CancellationToken cancellationToken)
     {
         var userExisted =
-            await _userRepository.FindSingleAsync(x =>
+            await userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email) || x.PhoneNumber.Equals(request.PhoneNumber), cancellationToken);
-        
+
         if (userExisted is not null && userExisted.Status == 1)
         {
             return Result.Failure(new Error("500", "Email already exists"));
         }
-        
+
         if (userExisted is not null && userExisted.Email != request.Email)
         {
             return Result.Failure(new Error("500", "Email not match with this phone number"));
@@ -41,7 +34,8 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
 
         if (userExisted is null)
         {
-            var hashingPassword = _passwordHasherService.HashPassword(request.Password);
+            var hashingPassword = passwordHasherService.HashPassword(request.Password);
+            var role = await roleRepository.FindSingleAsync(x => x.Name == Constant.CUSTOMER, cancellationToken);
 
             User newUser = new()
             {
@@ -54,13 +48,14 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
                 DateOfBirth = request.DateOfBirth,
                 Address = request.Address,
                 Status = 0,
+                RoleId = role?.Id
             };
-        
-            _userRepository.Add(newUser);
+
+            userRepository.Add(newUser);
         }
         else
         {
-            var hashingPassword = _passwordHasherService.HashPassword(request.Password);
+            var hashingPassword = passwordHasherService.HashPassword(request.Password);
             if (hashingPassword != userExisted.Password)
             {
                 userExisted.Password = hashingPassword;
@@ -86,7 +81,7 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
                 userExisted.DateOfBirth = request.DateOfBirth;
             }
         }
-        
+
         Random random = new Random();
         var randomNumber = random.Next(0, 100000).ToString("D5");
 
@@ -95,8 +90,8 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
         var options = new DistributedCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromSeconds(absoluteExpiration));
-        
-        await _mailService.SendMail(new MailContent
+
+        await mailService.SendMail(new MailContent
         {
             To = request.Email,
             Subject = $"Register Verify Code",
@@ -105,12 +100,11 @@ public class RegisterCommandHandler : ICommandHandler<Command.RegisterCommand>
             <p>Your register verify code is: {randomNumber}</p>
             <p>You have 60 seconds for insert !</p>
             ",
-           
         });
-        
-        await _cacheService.SetAsync($"{nameof(Command.RegisterCommand)}-UserEmail:{request.Email}", randomNumber, options, cancellationToken);
 
-        
+        await cacheService.SetAsync($"{nameof(Command.RegisterCommand)}-UserEmail:{request.Email}", randomNumber,
+            options, cancellationToken);
+
 
         return Result.Success("Register Successfully !");
     }
