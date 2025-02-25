@@ -8,7 +8,7 @@ public class Promotion : AggregateRoot<Guid>, IAuditableEntity
     public DateTimeOffset StartDate { get; set; }
     public DateTimeOffset EndDate { get; set; }
     [MaxLength(50)] public string? Status { get; set; }
-    public double? DiscountPercent { get; set; }
+    public double DiscountPercent { get; set; }
     public Guid? ServiceId { get; set; }
     public virtual Service? Service { get; set; }
     public bool IsActivated { get; set; } = false;

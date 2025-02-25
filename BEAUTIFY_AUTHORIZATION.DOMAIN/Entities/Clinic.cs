@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
-public class Clinics : AggregateRoot<Guid>, IAuditableEntity
+
+public class Clinic : AggregateRoot<Guid>, IAuditableEntity
 {
     [MaxLength(100)] public required string Name { get; set; }
     [MaxLength(100)] public required string Email { get; set; }
@@ -20,16 +21,17 @@ public class Clinics : AggregateRoot<Guid>, IAuditableEntity
     public bool IsActivated { get; set; } = false;
     public bool? IsParent { get; set; } = false;
     public Guid? ParentId { get; set; }
-    public virtual Clinics? Parent { get; set; }
+    public virtual Clinic? Parent { get; set; }
     [MaxLength(250)] public string? Note { get; set; }
-    public virtual ICollection<Clinics> Children { get; set; } = [];
+    public virtual ICollection<Clinic> Children { get; set; } = [];
     public virtual ICollection<ClinicOnBoardingRequest>? ClinicOnBoardingRequests { get; set; }
     public virtual ICollection<SystemTransaction>? SystemTransaction { get; set; }
 
-
+    public virtual ICollection<ClinicService>? ClinicServices { get; set; }
     public virtual ICollection<UserClinic>? UserClinics { get; set; }
+    
     public virtual ICollection<LivestreamRoom>? LivestreamRooms { get; set; }
-    public virtual ICollection<Category>? Categories { get; set; }
+    // public virtual ICollection<Category>? Categories { get; set; }
     public virtual ICollection<ClinicVoucher>? ClinicVouchers { get; set; }
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

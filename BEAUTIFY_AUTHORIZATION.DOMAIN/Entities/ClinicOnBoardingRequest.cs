@@ -8,7 +8,7 @@ public class ClinicOnBoardingRequest : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(250)] public string? RejectReason { get; set; } 
     public DateTimeOffset SendMailDate { get; set; }
     public Guid ClinicId { get; set; }
-    public virtual Clinics? Clinic { get; set; }
+    public virtual Clinic? Clinic { get; set; }
     
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }

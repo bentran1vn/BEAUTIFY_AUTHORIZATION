@@ -12,8 +12,8 @@ public class Category : AggregateRoot<Guid>, IAuditableEntity
     public virtual Category? Parent { get; set; }
 
     public virtual ICollection<Category> Children { get; set; } = [];
-    public Guid? ClinicId { get; set; }
-    public virtual Clinics? Clinic { get; set; }
+    // public Guid? ClinicId { get; set; }
+    // public virtual Clinic? Clinic { get; set; }
 
     public virtual ICollection<Service> Services { get; set; } = [];
 

@@ -13,12 +13,12 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(255)] public required string Password { get; set; }
     [MaxLength(50)] public required int Status { get; set; }
     // 0 Pending 1 Approve 2 Reject 3 Banned
-    public required DateOnly DateOfBirth { get; set; }
+    public DateOnly? DateOfBirth { get; set; }
     public Guid? RoleId { get; set; }
     public virtual Role? Role { get; set; }
 
     [MaxLength(14, ErrorMessage = "Phone Number must be 10 digits")]
-    public required string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
     public int FailedLoginAttempts { get; set; }
     public DateTimeOffset? LockoutEnd { get; set; }

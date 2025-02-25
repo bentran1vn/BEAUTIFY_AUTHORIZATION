@@ -14,14 +14,16 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
     private readonly IJwtTokenService _jwtTokenService;
     private readonly ICacheService _cacheService;
     private readonly IRepositoryBase<User, Guid> _userRepository;
+    private readonly IRepositoryBase<UserClinic, Guid> _userClinicRepository;
     private readonly IPasswordHasherService _passwordHasherService;
 
-    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService)
+    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, IRepositoryBase<UserClinic, Guid> userClinicRepository)
     {
         _jwtTokenService = jwtTokenService;
         _cacheService = cacheService;
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
+        _userClinicRepository = userClinicRepository;
     }
 
     public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
@@ -29,7 +31,12 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         // Check User
         var user =
             await _userRepository.FindSingleAsync(x =>
-                x.Email.Equals(request.Email), cancellationToken) ?? throw new Exception("User Not Existed !");
+                x.Email.Trim().ToLower().Equals(request.Email.Trim().ToLower()), cancellationToken, x => x.Role!);
+
+        if (user == null)
+        {
+            return Result.Failure<Response.Authenticated>(new Error("404", "User Not Found"));
+        }
 
         if (!_passwordHasherService.VerifyPassword(request.Password, user.Password))
         {
@@ -40,13 +47,25 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, request.Email),
-            new(ClaimTypes.Role, "1"),
-            new("Role","1"),
+            new(ClaimTypes.Role, user.Role!.Name),
+            new("RoleId", user.Role!.Id.ToString()),
             new("UserId", user.Id.ToString()),
             new(ClaimTypes.Name, request.Email),
             new(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString()),
             new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
+        
+        if (user.Role!.Name.Equals("Clinic Admin"))
+        {
+            var mainClinicOwner = await _userClinicRepository.FindSingleAsync(
+                x => 
+                    x.UserId.Equals(user.Id) &&
+                    x.Clinic != null &&
+                    x.Clinic.IsParent != null &&
+                    x.Clinic.IsParent.Value == true, cancellationToken);
+            
+            claims.Add(new("ClinicId",mainClinicOwner?.ClinicId.ToString() ?? ""));
+        }
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
         var refreshToken = _jwtTokenService.GenerateRefreshToken();
