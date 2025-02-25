@@ -19,29 +19,20 @@ public class GetLoginGoogleQueryHandler(IRepositoryBase<User, Guid> repositoryBa
             return (Result<Response.Authenticated>)Result.Failure(new Error("404", "Invalid Google Token"));
         }
         var user = await repositoryBase.FindSingleAsync(x => x.Email == payload.Email, cancellationToken);
-        //var hashedPassword = passwordHasherService.HashPassword("12345");
-
-        //if (user == null)
-        //{ 
-        //    //payload.Email = phamphucnghi1706@gmail.com
-        //    if (emails.Exists(payload.Email.Contains))
-        //    {
-        //        status = 0;
-        //        role = 1;
-        //    }
-        //    user = new User
-        //    {
-        //        Email = payload.Email,
-        //        FullName = payload.Name,
-        //        Points = 0,
-        //        Role = role,
-        //        Status = status,
-        //        Password = hashedPassword,
-        //    };
-
-        //    repositoryBase.Add(user);
-        //    await eFUnitOfWork.SaveChangesAsync(cancellationToken);
-        //}
+        // if (user == null)
+        // {
+        //     user = new User
+        //     {
+        //         Id = Guid.NewGuid(),
+        //         Email = payload.Email,
+        //         FirstName = payload.GivenName,
+        //         LastName = payload.FamilyName,
+        //         ProfilePicture = payload.Picture,
+        //         PhoneNumb
+        //         Status = 1
+        //     };
+        //     repositoryBase.Add(user);
+        // }
 
         var expirationTime = DateTime.Now.AddMinutes(5);
         var claims = new List<Claim>
