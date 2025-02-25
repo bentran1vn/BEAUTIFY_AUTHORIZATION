@@ -48,6 +48,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         {
             new(ClaimTypes.Email, request.Email),
             new(ClaimTypes.Role, user.Role!.Name),
+            new("Role", user.Role!.Name),
             new("RoleId", user.Role!.Id.ToString()),
             new("UserId", user.Id.ToString()),
             new(ClaimTypes.Name, request.Email),
