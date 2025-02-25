@@ -12,7 +12,7 @@ public class LivestreamRoom : AggregateRoot<Guid>, IAuditableEntity
     public int? Duration { get; set; }
     public int? TotalViewers { get; set; }
     public Guid? ClinicId { get; set; }
-    public virtual Clinics Clinic { get; set; }
+    public virtual Clinic Clinic { get; set; }
 
 
     public DateTimeOffset CreatedOnUtc { get; set; }

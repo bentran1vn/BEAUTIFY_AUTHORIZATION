@@ -5,7 +5,7 @@ namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 public class ClinicVoucher : AggregateRoot<Guid>, IAuditableEntity
 {
     public Guid ClinicId { get; set; }
-    public virtual Clinics? Clinic { get; set; }
+    public virtual Clinic? Clinic { get; set; }
     public Guid ServiceId { get; set; }
     public virtual Service? Service { get; set; }
     [MaxLength(100)] public required string Name { get; set; }
