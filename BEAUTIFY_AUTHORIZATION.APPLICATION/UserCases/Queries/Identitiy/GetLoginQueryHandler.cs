@@ -75,7 +75,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15)
+            RefreshTokenExpiryTime = DateTime.Now.AddHours(15)
         };
 
         var slidingExpiration = request.SlidingExpirationInMinutes == 0 ? 10 : request.SlidingExpirationInMinutes;
