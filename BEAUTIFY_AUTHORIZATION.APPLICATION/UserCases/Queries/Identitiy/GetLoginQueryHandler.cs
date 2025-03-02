@@ -6,6 +6,7 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
 
@@ -16,14 +17,18 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
     private readonly IRepositoryBase<User, Guid> _userRepository;
     private readonly IRepositoryBase<UserClinic, Guid> _userClinicRepository;
     private readonly IPasswordHasherService _passwordHasherService;
+    private readonly IRepositoryBase<SystemTransaction, Guid> _systemTransactionRepository;
+    private readonly IRepositoryBase<SubscriptionPackage, Guid> _subscriptionPackageRepository;
 
-    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, IRepositoryBase<UserClinic, Guid> userClinicRepository)
+    public GetLoginQueryHandler(IJwtTokenService jwtTokenService, ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, IRepositoryBase<UserClinic, Guid> userClinicRepository, IRepositoryBase<SystemTransaction, Guid> systemTransactionRepository, IRepositoryBase<SubscriptionPackage, Guid> subscriptionPackageRepository)
     {
         _jwtTokenService = jwtTokenService;
         _cacheService = cacheService;
         _userRepository = userRepository;
         _passwordHasherService = passwordHasherService;
         _userClinicRepository = userClinicRepository;
+        _systemTransactionRepository = systemTransactionRepository;
+        _subscriptionPackageRepository = subscriptionPackageRepository;
     }
 
     public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
@@ -64,8 +69,41 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
                     x.Clinic != null &&
                     x.Clinic.IsParent != null &&
                     x.Clinic.IsParent.Value == true, cancellationToken);
+
+            if (mainClinicOwner == null)
+            {
+                return Result.Failure<Response.Authenticated>(new Error("404", "Clinic Not Found"));
+            }
             
             claims.Add(new("ClinicId",mainClinicOwner?.ClinicId.ToString() ?? ""));
+            
+            var sub = await _systemTransactionRepository
+                .FindAll(
+                    x => x.ClinicId == mainClinicOwner!.ClinicId &&
+                         !x.IsDeleted)
+                .OrderByDescending(y => y.TransactionDate)
+                .Include(x => x.SubscriptionPackage)
+                .FirstOrDefaultAsync(cancellationToken);
+            
+            if (sub == null)
+            {
+                var subTrial = await _subscriptionPackageRepository.FindSingleAsync(x => x.Name.Equals("Trial"), cancellationToken);
+
+                if (subTrial == null)
+                {
+                    return Result.Failure<Response.Authenticated>(new Error("500", "Subscription package Not Found"));
+                }
+                
+                claims.Add(new("SubscriptionPackageId",subTrial.Id.ToString() ?? ""));
+                claims.Add(new("SubscriptionPackageName",subTrial.Name ?? ""));
+                claims.Add(new("SubscriptionPackageExpire",sub?.TransactionDate.AddDays(sub.SubscriptionPackage!.Duration).ToString() ?? ""));
+            }
+            else
+            {
+                claims.Add(new("SubscriptionPackageId",sub?.SubscriptionPackageId.ToString() ?? ""));
+                claims.Add(new("SubscriptionPackageName",sub?.SubscriptionPackage!.Name ?? ""));
+                claims.Add(new("SubscriptionPackageExpire",sub?.TransactionDate.AddDays(sub.SubscriptionPackage!.Duration).ToString() ?? ""));
+            }
         }
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
