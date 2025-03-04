@@ -10,4 +10,8 @@
       <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.4.6" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageVersion Update="BEAUTIFY_PACKAGES.SHARE" Version="1.5.8" />
+    </ItemGroup>
+
 </Project>

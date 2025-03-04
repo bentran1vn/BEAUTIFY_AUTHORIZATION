@@ -18,4 +18,8 @@
       <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.PERSISTENCE\BEAUTIFY_AUTHORIZATION.PERSISTENCE.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageVersion Update="BEAUTIFY_PACKAGES.SHARE" Version="1.5.8" />
+    </ItemGroup>
+
 </Project>

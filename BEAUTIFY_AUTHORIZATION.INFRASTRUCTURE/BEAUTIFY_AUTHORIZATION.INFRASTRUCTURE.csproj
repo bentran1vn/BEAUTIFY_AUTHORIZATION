@@ -11,4 +11,8 @@
       <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageVersion Update="BEAUTIFY_PACKAGES.SHARE" Version="1.5.8" />
+    </ItemGroup>
+
 </Project>

@@ -37,4 +37,12 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="logs\log-20250228.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageVersion Update="BEAUTIFY_PACKAGES.SHARE" Version="1.5.8" />
+    </ItemGroup>
+
 </Project>
