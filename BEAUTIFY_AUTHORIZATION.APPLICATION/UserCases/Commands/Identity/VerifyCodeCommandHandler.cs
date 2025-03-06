@@ -8,14 +8,14 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
-
 public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeCommand>
 {
     private readonly ICacheService _cacheService;
     private readonly IRepositoryBase<User, Guid> _userRepository;
     private readonly IJwtTokenService _jwtTokenService;
 
-    public VerifyCodeCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository, IJwtTokenService jwtTokenService)
+    public VerifyCodeCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository,
+        IJwtTokenService jwtTokenService)
     {
         _cacheService = cacheService;
         _userRepository = userRepository;
@@ -44,9 +44,9 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
         if (request.Type == 1)
         {
             code = await _cacheService.GetAsync<string>(
-                        $"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{request.Email}", cancellationToken);
+                $"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{request.Email}", cancellationToken);
         }
-        
+
 
         if (code == null || !code.Equals(request.Code))
         {
@@ -57,8 +57,10 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
         {
             user.Status = 1;
             return Result.Success("Verify Successfully !");
-        };
-        
+        }
+
+        ;
+
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, user.Email),
@@ -67,7 +69,7 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             new Claim("UserId", user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Email),
             new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
-            new Claim(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString())
+            new Claim(ClaimTypes.Expired, DateTime.Now.AddHours(5).ToString())
         };
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
@@ -79,14 +81,15 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(15)
         };
-        
+
         var slidingExpiration = 10;
         var absoluteExpiration = 15;
         var options = new DistributedCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
-        
-        await _cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options, cancellationToken);
+
+        await _cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options,
+            cancellationToken);
 
         return Result.Success(response);
     }

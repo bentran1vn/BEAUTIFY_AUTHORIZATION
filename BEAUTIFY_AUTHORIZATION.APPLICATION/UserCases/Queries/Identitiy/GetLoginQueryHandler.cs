@@ -57,7 +57,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
             new("RoleId", user.Role!.Id.ToString()),
             new("UserId", user.Id.ToString()),
             new(ClaimTypes.Name, request.Email),
-            new(ClaimTypes.Expired, DateTime.Now.AddMinutes(5).ToString()),
+            new(ClaimTypes.Expired, DateTime.Now.AddHours(5).ToString()),
             new(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
         
