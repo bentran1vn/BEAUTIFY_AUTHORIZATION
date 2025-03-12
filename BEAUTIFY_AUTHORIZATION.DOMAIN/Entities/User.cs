@@ -22,12 +22,17 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(14, ErrorMessage = "Phone Number must be 10 digits")]
     public string? PhoneNumber { get; set; }
 
-    public int FailedLoginAttempts { get; set; }
-    public DateTimeOffset? LockoutEnd { get; set; }
-    public bool EmailConfirmed { get; set; }
-    public bool PhoneNumberConfirmed { get; set; }
     [MaxLength(250)] public string? ProfilePicture { get; set; }
-    [MaxLength(250)] public string? Address { get; set; }
+
+    // address in detail
+    [MaxLength(100)] public string? City { get; set; }
+    [MaxLength(100)] public string? District { get; set; }
+    [MaxLength(100)] public string? Ward { get; set; }
+    [MaxLength(100)] public string? HouseNumber { get; set; }
+
+    [MaxLength(250)] public string? Address => $"{HouseNumber}, {Ward}, {District}, {City}".Trim(',', ' ', '\n');
+
+
     [MaxLength(250)] public string? RefreshToken { get; set; }
 
     public DateTimeOffset CreatedOnUtc { get; set; }

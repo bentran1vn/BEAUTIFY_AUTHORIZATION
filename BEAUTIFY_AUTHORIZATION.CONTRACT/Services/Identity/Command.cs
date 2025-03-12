@@ -1,7 +1,6 @@
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 
 namespace BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
-
 public static class Command
 {
     public record ForgotPasswordCommand(
@@ -9,15 +8,23 @@ public static class Command
     ) : ICommand;
 
     public record RegisterCommand(
-        string Email, string Password, string FirstName, string LastName,
-        string PhoneNumber, DateOnly DateOfBirth, string Address
+        string Email,
+        string Password,
+        string FirstName,
+        string LastName,
+        string PhoneNumber,
+        DateOnly DateOfBirth,
+        string? City,
+        string? District,
+        string? Ward,
+        string? HouseNumber
     ) : ICommand;
 
     public record ChangePasswordCommand(
         string Email,
         string NewPassword
     ) : ICommand;
-    
+
     public record ChangePasswordCommandBody(
         string NewPassword
     );

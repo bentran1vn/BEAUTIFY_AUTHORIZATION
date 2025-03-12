@@ -24,12 +24,12 @@ public class RegisterCommandHandler(
 
         if (userExisted is not null && userExisted.Status == 1)
         {
-            return Result.Failure(new Error("500", "Email already exists"));
+            return Result.Failure(new Error("400", "Email already exists"));
         }
 
         if (userExisted is not null && userExisted.Email != request.Email)
         {
-            return Result.Failure(new Error("500", "Email not match with this phone number"));
+            return Result.Failure(new Error("400", "Email not match with this phone number"));
         }
 
         if (userExisted is null)
@@ -46,7 +46,10 @@ public class RegisterCommandHandler(
                 LastName = request.LastName,
                 PhoneNumber = request.PhoneNumber,
                 DateOfBirth = request.DateOfBirth,
-                Address = request.Address,
+                City = request.City,
+                Ward = request.Ward,
+                District = request.District,
+                HouseNumber = request.HouseNumber,
                 Status = 0,
                 RoleId = role?.Id
             };
@@ -61,10 +64,7 @@ public class RegisterCommandHandler(
                 userExisted.Password = hashingPassword;
             }
 
-            if (userExisted.Address != request.Address)
-            {
-                userExisted.Address = request.Address;
-            }
+           
 
             if (userExisted.FirstName != request.FirstName)
             {
@@ -82,7 +82,7 @@ public class RegisterCommandHandler(
             }
         }
 
-        Random random = new Random();
+        var random = new Random();
         var randomNumber = random.Next(0, 100000).ToString("D5");
 
         var slidingExpiration = 60;
