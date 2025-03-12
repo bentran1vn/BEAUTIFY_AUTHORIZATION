@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using System.Text.Json;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.PRESENTATION.Abstractions;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
 
 namespace BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity;
 using CommandV1 = Command;
@@ -32,7 +35,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
             .WithSummary("Registers a new user.")
             .WithDescription("After Registration, User will receive a verify code through the email." +
                              " After that use Verify Code with type = 0 for verify account.")
-            /*.WithOpenApi(operation => new(operation)
+            .WithOpenApi(operation => new(operation)
                 {
                     RequestBody = new OpenApiRequestBody()
                     {
@@ -42,18 +45,21 @@ public class AuthApi : ApiEndpoint, ICarterModule
                             {
                                 Example = new OpenApiString(JsonSerializer.Serialize(new CommandV1.RegisterCommand(
                                     "dung@gmail.com",
-                                    "Dungcao123@",
+                                    "123456789",
                                     "Dung",
                                     "Cao",
                                     "+84983460123",
                                     new DateOnly(2002, 11, 29),
-                                    "District 9, Thu Duc"
+                                    "Vietnam",
+                                    "Hanoi",
+                                    "Cau Giay",
+                                    "123"
                                 )))
                             }
                         }
                     }
                 }
-            )*/;
+            );
         group1.MapPost("refresh_token", RefreshTokenV1);
         group1.MapPost("forgot_password", ForgotPasswordV1);
         group1.MapPost("verify_code", VerifyCodeV1);
