@@ -49,7 +49,6 @@ public class RegisterCommandHandler(
                 City = request.City,
                 Ward = request.Ward,
                 District = request.District,
-                HouseNumber = request.HouseNumber,
                 Status = 0,
                 RoleId = role?.Id
             };
@@ -64,7 +63,6 @@ public class RegisterCommandHandler(
                 userExisted.Password = hashingPassword;
             }
 
-           
 
             if (userExisted.FirstName != request.FirstName)
             {

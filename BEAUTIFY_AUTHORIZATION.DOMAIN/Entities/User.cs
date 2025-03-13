@@ -28,9 +28,9 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(100)] public string? City { get; set; }
     [MaxLength(100)] public string? District { get; set; }
     [MaxLength(100)] public string? Ward { get; set; }
-    [MaxLength(100)] public string? HouseNumber { get; set; }
+    [MaxLength(100)] public string? Address { get; set; }
 
-    [MaxLength(250)] public string? Address => $"{HouseNumber}, {Ward}, {District}, {City}".Trim(',', ' ', '\n');
+    [MaxLength(250)] public string? FullAddress => $"{Address}, {Ward}, {District}, {City}".Trim(',', ' ', '\n');
 
 
     [MaxLength(250)] public string? RefreshToken { get; set; }

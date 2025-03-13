@@ -17,7 +17,7 @@ public static class Command
         string? City,
         string? District,
         string? Ward,
-        string? HouseNumber
+        string? Address
     ) : ICommand;
 
     public record ChangePasswordCommand(
