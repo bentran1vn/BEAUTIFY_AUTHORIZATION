@@ -30,7 +30,7 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 
         if (user is null)
         {
-            return Result.Failure(new Error("400", "User Not Existed !"));
+            return Result.Failure(new Error("404", "User Not Existed !"));
         }
 
         string? code = null;
@@ -50,7 +50,7 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
 
         if (code == null || !code.Equals(request.Code))
         {
-            return Result.Failure(new Error("500", "Verify Code is Wrong !"));
+            return Result.Failure(new Error("400", "Verify Code is Wrong !"));
         }
 
         if (request.Type == 0)

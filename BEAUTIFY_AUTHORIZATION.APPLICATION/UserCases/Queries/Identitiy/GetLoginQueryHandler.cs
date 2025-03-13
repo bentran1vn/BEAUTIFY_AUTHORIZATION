@@ -75,7 +75,7 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
                 return Result.Failure<Response.Authenticated>(new Error("404", "Clinic Not Found"));
             }
             
-            claims.Add(new("ClinicId",mainClinicOwner?.ClinicId.ToString() ?? ""));
+            claims.Add(new Claim("ClinicId",mainClinicOwner?.ClinicId.ToString() ?? ""));
             
             var sub = await _systemTransactionRepository
                 .FindAll(
@@ -91,19 +91,19 @@ public class GetLoginQueryHandler : IQueryHandler<Query.Login, Response.Authenti
 
                 if (subTrial == null)
                 {
-                    return Result.Failure<Response.Authenticated>(new Error("500", "Subscription package Not Found"));
+                    return Result.Failure<Response.Authenticated>(new Error("404", "Subscription package Not Found"));
                 }
                 
-                claims.Add(new("SubscriptionPackageId",subTrial.Id.ToString() ?? ""));
-                claims.Add(new("SubscriptionPackageName",subTrial.Name ?? ""));
-                claims.Add(new("SubscriptionPackageExpire",sub?.TransactionDate.AddDays(sub.SubscriptionPackage!.Duration).ToString() ?? ""));
+                claims.Add(new Claim("SubscriptionPackageId",subTrial.Id.ToString() ?? ""));
+                claims.Add(new Claim("SubscriptionPackageName",subTrial.Name ?? ""));
             }
             else
             {
-                claims.Add(new("SubscriptionPackageId",sub?.SubscriptionPackageId.ToString() ?? ""));
-                claims.Add(new("SubscriptionPackageName",sub?.SubscriptionPackage!.Name ?? ""));
-                claims.Add(new("SubscriptionPackageExpire",sub?.TransactionDate.AddDays(sub.SubscriptionPackage!.Duration).ToString() ?? ""));
+                claims.Add(new Claim("SubscriptionPackageId",sub?.SubscriptionPackageId.ToString() ?? ""));
+                claims.Add(new Claim("SubscriptionPackageName",sub?.SubscriptionPackage!.Name ?? ""));
             }
+
+            claims.Add(new Claim("SubscriptionPackageExpire",sub?.TransactionDate.AddDays(sub.SubscriptionPackage!.Duration).ToString() ?? ""));
         }
 
         var accessToken = _jwtTokenService.GenerateAccessToken(claims);
