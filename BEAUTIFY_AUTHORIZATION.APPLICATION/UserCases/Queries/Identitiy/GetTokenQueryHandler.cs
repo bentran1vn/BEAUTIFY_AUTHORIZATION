@@ -26,11 +26,11 @@ public class GetTokenQueryHandler : IQueryHandler<Query.Token, Response.Authenti
             throw new Exception("Invalid refresh token");
         }
 
-        if (!isExpired)
+       /* if (!isExpired)
         {
             return Result.Success(cacheData);
         }
-
+*/
         var accessToken = _jwtTokenService.GenerateAccessToken(claimPrincipal.Claims);
         var response = new Response.Authenticated()
         {
