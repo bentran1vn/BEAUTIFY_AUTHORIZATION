@@ -8,24 +8,16 @@ using Microsoft.Extensions.Caching.Distributed;
 using System.Security.Claims;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
-public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeCommand>
+public class VerifyCodeCommandHandler(
+    ICacheService cacheService,
+    IRepositoryBase<User, Guid> userRepository,
+    IJwtTokenService jwtTokenService)
+    : ICommandHandler<Command.VerifyCodeCommand>
 {
-    private readonly ICacheService _cacheService;
-    private readonly IRepositoryBase<User, Guid> _userRepository;
-    private readonly IJwtTokenService _jwtTokenService;
-
-    public VerifyCodeCommandHandler(ICacheService cacheService, IRepositoryBase<User, Guid> userRepository,
-        IJwtTokenService jwtTokenService)
-    {
-        _cacheService = cacheService;
-        _userRepository = userRepository;
-        _jwtTokenService = jwtTokenService;
-    }
-
     public async Task<Result> Handle(Command.VerifyCodeCommand request, CancellationToken cancellationToken)
     {
         var user =
-            await _userRepository.FindSingleAsync(x =>
+            await userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken);
 
         if (user is null)
@@ -33,20 +25,14 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             return Result.Failure(new Error("404", "User Not Existed !"));
         }
 
-        string? code = null;
-
-        if (request.Type == 0)
+        var code = request.Type switch
         {
-            code = await _cacheService.GetAsync<string>(
-                $"{nameof(Command.RegisterCommand)}-UserEmail:{request.Email}", cancellationToken);
-        }
-
-        if (request.Type == 1)
-        {
-            code = await _cacheService.GetAsync<string>(
-                $"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{request.Email}", cancellationToken);
-        }
-
+            0 => await cacheService.GetAsync<string>($"{nameof(Command.RegisterCommand)}-UserEmail:{request.Email}",
+                cancellationToken),
+            1 => await cacheService.GetAsync<string>(
+                $"{nameof(Command.ForgotPasswordCommand)}-UserAccount:{request.Email}", cancellationToken),
+            _ => null
+        };
 
         if (code == null || !code.Equals(request.Code))
         {
@@ -72,8 +58,8 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             new Claim(ClaimTypes.Expired, DateTime.Now.AddHours(5).ToString())
         };
 
-        var accessToken = _jwtTokenService.GenerateAccessToken(claims);
-        var refreshToken = _jwtTokenService.GenerateRefreshToken();
+        var accessToken = jwtTokenService.GenerateAccessToken(claims);
+        var refreshToken = jwtTokenService.GenerateRefreshToken();
 
         var response = new Response.Authenticated()
         {
@@ -88,7 +74,7 @@ public class VerifyCodeCommandHandler : ICommandHandler<Command.VerifyCodeComman
             .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
 
-        await _cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options,
+        await cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", response, options,
             cancellationToken);
 
         return Result.Success(response);

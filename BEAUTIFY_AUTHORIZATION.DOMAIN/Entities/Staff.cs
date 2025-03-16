@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
-public class User : AggregateRoot<Guid>, IAuditableEntity
+public class Staff : AggregateRoot<Guid>,IAuditableEntity
 {
     [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)(\.[a-zA-Z]{2,})$", ErrorMessage = "Invalid Email Format")]
     [MaxLength(100)]
@@ -36,9 +36,11 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(250)] public string? RefreshToken { get; set; }
 
 
+    public virtual ICollection<UserClinic>? UserClinics { get; set; }
+    public virtual ICollection<DoctorCertificate>? DoctorCertificates { get; set; }
     public virtual ICollection<UserConversation>? UserConversations { get; set; }
-    public virtual ICollection<CustomerSchedule>? CustomerSchedules { get; set; }
-    public virtual ICollection<Order>? Orders { get; set; }
+    public virtual ICollection<DoctorService>? DoctorServices { get; set; }
+
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

@@ -6,24 +6,16 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
-
-public class ChangePasswordCommandHandler : ICommandHandler<Command.ChangePasswordCommand>
+public class ChangePasswordCommandHandler(
+    IRepositoryBase<User, Guid> userRepository,
+    IPasswordHasherService passwordHasherService,
+    ICacheService cacheService)
+    : ICommandHandler<Command.ChangePasswordCommand>
 {
-    private readonly IRepositoryBase<User, Guid> _userRepository;
-    private readonly IPasswordHasherService _passwordHasherService;
-    private readonly ICacheService _cacheService;
-
-    public ChangePasswordCommandHandler(IRepositoryBase<User, Guid> userRepository, IPasswordHasherService passwordHasherService, ICacheService cacheService)
-    {
-        _userRepository = userRepository;
-        _passwordHasherService = passwordHasherService;
-        _cacheService = cacheService;
-    }
-
     public async Task<Result> Handle(Command.ChangePasswordCommand request, CancellationToken cancellationToken)
     {
         var user =
-            await _userRepository.FindSingleAsync(x =>
+            await userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken);
 
         if (user is null)
@@ -31,11 +23,11 @@ public class ChangePasswordCommandHandler : ICommandHandler<Command.ChangePasswo
             throw new Exception("User Not Existed !");
         }
 
-        var hashingPassword = _passwordHasherService.HashPassword(request.NewPassword);
+        var hashingPassword = passwordHasherService.HashPassword(request.NewPassword);
 
         user.Password = hashingPassword;
 
-        await _cacheService.RemoveAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", cancellationToken);
+        await cacheService.RemoveAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", cancellationToken);
 
         return Result.Success("Change Password Successfully !");
     }

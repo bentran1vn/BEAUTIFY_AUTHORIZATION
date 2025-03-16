@@ -35,7 +35,7 @@ public class RegisterCommandHandler(
         if (userExisted is null)
         {
             var hashingPassword = passwordHasherService.HashPassword(request.Password);
-            var role = await roleRepository.FindSingleAsync(x => x.Name == Constant.CUSTOMER, cancellationToken);
+            var role = await roleRepository.FindSingleAsync(x => x.Name == Constant.Role.CUSTOMER, cancellationToken);
 
             User newUser = new()
             {
