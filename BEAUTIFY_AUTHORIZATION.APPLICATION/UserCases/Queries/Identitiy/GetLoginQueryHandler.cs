@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
-
 public class GetLoginQueryHandler(
     IJwtTokenService jwtTokenService,
     ICacheService cacheService,
@@ -30,6 +29,8 @@ public class GetLoginQueryHandler(
                 UserId = x.Id,
                 x.Email,
                 x.Password,
+                FullName = x.FirstName + " " + x.LastName,
+                x.ProfilePicture,
                 Role = new
                 {
                     x.Role!.Id,
@@ -42,13 +43,15 @@ public class GetLoginQueryHandler(
         if (user is null)
         {
             // ✅ Directly project necessary fields for `staff` instead of manual mapping
-             var staff = await staffRepository
+            var staff = await staffRepository
                 .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()))
                 .Select(x => new
                 {
                     UserId = x.Id,
                     x.Email,
                     x.Password,
+                    FullName = x.FirstName + " " + x.LastName,
+                    x.ProfilePicture,
                     Role = new
                     {
                         x.Role!.Id,
@@ -60,11 +63,14 @@ public class GetLoginQueryHandler(
             if (staff is null)
                 return Result.Failure<Response.Authenticated>(new Error("404", "User Not Found"));
 
-            user = staff with { Role = new
+            user = staff with
             {
-                staff.Role.Id,
-                staff.Role.Name
-            } };
+                Role = new
+                {
+                    staff.Role.Id,
+                    staff.Role.Name
+                }
+            };
         }
 
         // ✅ Secure password check
@@ -80,7 +86,10 @@ public class GetLoginQueryHandler(
             new("UserId", user.UserId.ToString()),
             new(ClaimTypes.Name, request.Email),
             new(ClaimTypes.Expired, DateTime.UtcNow.AddHours(5).ToString("o")),
-            new(ClaimTypes.NameIdentifier, user.UserId.ToString())
+            new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+            new("Name", user.FullName),
+            new("Email", user.Email),
+            new("ProfilePicture", user.ProfilePicture ?? string.Empty)
         };
 
         // ✅ Handle Clinic Admin logic
@@ -146,7 +155,7 @@ public class GetLoginQueryHandler(
                 : 15));
 
         await cacheService.SetAsync(
-            $"Login:{request.Email}", 
+            $"Login:{request.Email}",
             response,
             options,
             cancellationToken);
