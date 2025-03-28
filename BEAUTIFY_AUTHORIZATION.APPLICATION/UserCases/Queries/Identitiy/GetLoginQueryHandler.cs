@@ -125,7 +125,7 @@ public class GetLoginQueryHandler(
             else
             {
                 var subTrial = await subscriptionPackageRepository.FindSingleAsync(
-                    x => x.Name == "Trial",
+                    x => x.Name == "Dùng Thử",
                     cancellationToken);
 
                 if (subTrial is null)
