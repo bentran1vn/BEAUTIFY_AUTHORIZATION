@@ -5,6 +5,7 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
+using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Constrants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -89,14 +90,15 @@ public class GetLoginQueryHandler(
             new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new("Name", user.FullName),
             new("Email", user.Email),
-            new("ProfilePicture", user.ProfilePicture ?? string.Empty)
+            new("ProfilePicture", user.ProfilePicture ?? string.Empty),
+            new("RoleName", user.Role.Name)
         };
 
         // ✅ Handle Clinic Admin logic
-        if (user.Role.Name == "Clinic Admin")
+        if (user.Role.Name is "Clinic Admin" or Constant.Role.CLINIC_STAFF)
         {
             var mainClinicOwner = await userClinicRepository.FindSingleAsync(
-                x => x.UserId == user.UserId && x.Clinic != null && x.Clinic.IsParent == true,
+                x => x.UserId == user.UserId && x.Clinic != null,
                 cancellationToken);
 
             if (mainClinicOwner is null)
