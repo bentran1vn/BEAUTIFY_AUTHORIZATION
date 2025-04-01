@@ -126,15 +126,17 @@ public class GetLoginQueryHandler(
             }
             else
             {
-                var subTrial = await subscriptionPackageRepository.FindSingleAsync(
-                    x => x.Name == "Dùng Thử",
-                    cancellationToken);
+                //take minimum subscription package
 
-                if (subTrial is null)
+                var subTrial = await subscriptionPackageRepository.FindAll().ToListAsync(cancellationToken);
+                var minSub = subTrial.OrderBy(x => x.Price).FirstOrDefault();
+
+
+                if (minSub is null)
                     return Result.Failure<Response.Authenticated>(new Error("404", "Subscription package Not Found"));
 
-                claims.Add(new Claim("SubscriptionPackageId", subTrial.Id.ToString()));
-                claims.Add(new Claim("SubscriptionPackageName", subTrial.Name));
+                claims.Add(new Claim("SubscriptionPackageId", minSub.Id.ToString()));
+                claims.Add(new Claim("SubscriptionPackageName", minSub.Name));
             }
         }
 
