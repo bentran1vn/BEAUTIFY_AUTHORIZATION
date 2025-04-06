@@ -1,44 +1,46 @@
-﻿using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text.Json;
+using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
-using Google.Apis.Auth;
-using System.Security.Claims;
+using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Constrants;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
-public class GetLoginGoogleQueryHandler(
+public sealed class GetLoginGoogleQueryHandler(
     IRepositoryBase<User, Guid> repositoryBase,
     IJwtTokenService jwtTokenService,
     IMailService mailService,
-    IPasswordHasherService passwordHasherService) : IQueryHandler<Query.LoginGoogle, Response.Authenticated>
+    IRepositoryBase<Role, Guid> roleRepository,
+    IPasswordHasherService passwordHasherService) : IQueryHandler<Query.LoginGoogleCommand, Response.Authenticated>
 {
-    public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogle request,
-        CancellationToken cancellationToken)
+    public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogleCommand request, CancellationToken cancellationToken)
     {
-        var payload = await GoogleJsonWebSignature.ValidateAsync(request.GoogleToken);
-        if (payload == null)
-        {
-            return (Result<Response.Authenticated>)Result.Failure(new Error("404", "Invalid Google Token"));
-        }
+        if (new JwtSecurityTokenHandler().ReadToken(request.GoogleToken) is not JwtSecurityToken payload)
+            return Result.Failure<Response.Authenticated>(new Error("404", "Invalid Google Token"));
+        var payloadData = payload.Claims.ToList();
+        var email = payloadData.FirstOrDefault(c => c.Type == "email")?.Value;
+        var userMetadata = JsonSerializer.Deserialize<UserMetadata>(payloadData.FirstOrDefault(c => c.Type == "user_metadata")?.Value);
+        var (lastName, firstName) = SplitName(userMetadata?.FullName);
 
-        // randam a password with 6 digits
-        var random = new Random();
-        var randomNumber = random.Next(100000, 999999).ToString("D6");
-        var password = passwordHasherService.HashPassword(randomNumber);
-        var user = await repositoryBase.FindSingleAsync(x => x.Email == payload.Email, cancellationToken);
-        if (user == null)
+        var password = passwordHasherService.HashPassword(Random.Shared.Next(100000, 999999).ToString("D6"));
+        var user = await repositoryBase.FindSingleAsync(x => x.Email == email, cancellationToken);
+        if (user is null)
         {
+            var role = await roleRepository.FindSingleAsync(x => x.Name == Constant.Role.CUSTOMER, cancellationToken);
             user = new User
             {
                 Id = Guid.NewGuid(),
-                Email = payload.Email,
-                FirstName = payload.GivenName,
-                LastName = payload.FamilyName,
-                ProfilePicture = payload.Picture,
+                Email = email,
+                FirstName = firstName,
+                LastName = lastName,
+                ProfilePicture = userMetadata?.AvatarUrl,
                 Password = password,
-                Status = 1
+                Status = 1,
+                Role = role
             };
             repositoryBase.Add(user);
         }
@@ -52,29 +54,26 @@ public class GetLoginGoogleQueryHandler(
             new(ClaimTypes.Name, user.Email),
             new(ClaimTypes.Expired, expirationTime.ToString())
         };
-
-        var accessToken = jwtTokenService.GenerateAccessToken(claims);
-        var refreshToken = jwtTokenService.GenerateRefreshToken();
-
-        var response = new Response.Authenticated
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken,
-            RefreshTokenExpiryTime = expirationTime
-        };
-
-        //send mail to user
         await mailService.SendMail(new MailContent
         {
             To = user.Email,
             Subject = "Welcome to Beautify",
-            Body = $@"
-            <p>Dear {user.FirstName},</p>
-            <p>Welcome to Beautify !</p>
-            <p>Your password is: {randomNumber}</p>
-            "
+            Body = $@"<p>Dear {user.FullName},</p><p>Welcome to Beautify !</p><p>Your password is: {password}</p>"
         });
 
-        return Result.Success(response);
+        return Result.Success(new Response.Authenticated
+        {
+            AccessToken = jwtTokenService.GenerateAccessToken(claims),
+            RefreshToken = jwtTokenService.GenerateRefreshToken(),
+            RefreshTokenExpiryTime = null
+        });
+    }
+
+    private static (string LastName, string FirstName) SplitName(string? fullName)
+    {
+        if (string.IsNullOrWhiteSpace(fullName)) return ("", "");
+        var nameParts = fullName.Trim().Split([' '], StringSplitOptions.RemoveEmptyEntries);
+        return nameParts.Length == 0 ? ("", "") :
+            (string.Join(" ", nameParts[..^1]), nameParts[^1]);
     }
 }

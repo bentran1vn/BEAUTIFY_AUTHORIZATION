@@ -75,7 +75,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
         return result.IsFailure ? HandlerFailure(result) : Results.Ok(result);
     }
 
-    private static async Task<IResult> LoginGoogleV1(ISender sender, QueryV1.LoginGoogle login)
+    private static async Task<IResult> LoginGoogleV1(ISender sender, QueryV1.LoginGoogleCommand login)
     {
         var result = await sender.Send(login);
 

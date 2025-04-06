@@ -6,7 +6,7 @@ namespace BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 
 public static class Query
 {
-    public record LoginGoogle(string GoogleToken) : IQuery<Response.Authenticated>;
+    public record LoginGoogleCommand(string GoogleToken) : IQuery<Response.Authenticated>;
 
     public record LoginGoolgeTest : IQuery<string>;
     public record LogoutGoogle : IQuery<string>;
