@@ -11,18 +11,22 @@ namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
 public class GetLoginGoogleQueryHandler(
     IRepositoryBase<User, Guid> repositoryBase,
     IJwtTokenService jwtTokenService,
+    IMailService mailService,
     IPasswordHasherService passwordHasherService) : IQueryHandler<Query.LoginGoogle, Response.Authenticated>
 {
     public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogle request,
         CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
         var payload = await GoogleJsonWebSignature.ValidateAsync(request.GoogleToken);
         if (payload == null)
         {
             return (Result<Response.Authenticated>)Result.Failure(new Error("404", "Invalid Google Token"));
         }
 
+        // randam a password with 6 digits
+        var random = new Random();
+        var randomNumber = random.Next(100000, 999999).ToString("D6");
+        var password = passwordHasherService.HashPassword(randomNumber);
         var user = await repositoryBase.FindSingleAsync(x => x.Email == payload.Email, cancellationToken);
         if (user == null)
         {
@@ -33,7 +37,7 @@ public class GetLoginGoogleQueryHandler(
                 FirstName = payload.GivenName,
                 LastName = payload.FamilyName,
                 ProfilePicture = payload.Picture,
-                Password = "1",
+                Password = password,
                 Status = 1
             };
             repositoryBase.Add(user);
@@ -58,6 +62,18 @@ public class GetLoginGoogleQueryHandler(
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = expirationTime
         };
+
+        //send mail to user
+        await mailService.SendMail(new MailContent
+        {
+            To = user.Email,
+            Subject = "Welcome to Beautify",
+            Body = $@"
+            <p>Dear {user.FirstName},</p>
+            <p>Welcome to Beautify !</p>
+            <p>Your password is: {randomNumber}</p>
+            "
+        });
 
         return Result.Success(response);
     }
