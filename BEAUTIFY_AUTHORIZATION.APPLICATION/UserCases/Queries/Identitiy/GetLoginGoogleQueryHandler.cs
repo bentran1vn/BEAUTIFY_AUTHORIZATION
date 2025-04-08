@@ -46,16 +46,22 @@ public sealed class GetLoginGoogleQueryHandler(
             };
             repositoryBase.Add(user);
         }
-
-        var expirationTime = DateTime.Now.AddMinutes(5);
+        
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, user.Role.ToString()),
+            new(ClaimTypes.Role, user.Role.Name),
+            new("RoleId", user.Role.Id.ToString()),
+            new("UserId", user.Id.ToString()),
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.Email),
-            new(ClaimTypes.Expired, expirationTime.ToString())
+            new(ClaimTypes.Expired, DateTime.UtcNow.AddHours(5).ToString("o")),
+            new("Name", user.FullName),
+            new("Email", user.Email),
+            new("ProfilePicture", user.ProfilePicture ?? string.Empty),
+            new("RoleName", user.Role.Name)
         };
+        
         await mailService.SendMail(new MailContent
         {
             To = user.Email,
