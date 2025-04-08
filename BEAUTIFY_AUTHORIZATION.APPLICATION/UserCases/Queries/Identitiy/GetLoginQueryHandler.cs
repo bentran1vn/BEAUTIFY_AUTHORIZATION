@@ -76,7 +76,7 @@ public class GetLoginQueryHandler(
 
         // ✅ Secure password check
         if (!passwordHasherService.VerifyPassword(request.Password, user.Password))
-            throw new UnauthorizedAccessException("Unauthorized!");
+            return Result.Failure<Response.Authenticated>(new Error("401", "Wrong password"));
 
         // ✅ Generate JWT claims
         var claims = new List<Claim>

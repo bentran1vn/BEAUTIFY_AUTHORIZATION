@@ -17,16 +17,18 @@ public sealed class GetLoginGoogleQueryHandler(
     IRepositoryBase<Role, Guid> roleRepository,
     IPasswordHasherService passwordHasherService) : IQueryHandler<Query.LoginGoogleCommand, Response.Authenticated>
 {
-    public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogleCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogleCommand request,
+        CancellationToken cancellationToken)
     {
         if (new JwtSecurityTokenHandler().ReadToken(request.GoogleToken) is not JwtSecurityToken payload)
             return Result.Failure<Response.Authenticated>(new Error("404", "Invalid Google Token"));
         var payloadData = payload.Claims.ToList();
         var email = payloadData.FirstOrDefault(c => c.Type == "email")?.Value;
-        var userMetadata = JsonSerializer.Deserialize<UserMetadata>(payloadData.FirstOrDefault(c => c.Type == "user_metadata")?.Value);
+        var userMetadata =
+            JsonSerializer.Deserialize<UserMetadata>(payloadData.FirstOrDefault(c => c.Type == "user_metadata")?.Value);
         var (lastName, firstName) = SplitName(userMetadata?.FullName);
-
-        var password = passwordHasherService.HashPassword(Random.Shared.Next(100000, 999999).ToString("D6"));
+        var password = Random.Shared.Next(100000, 999999).ToString("D6");
+        var hashPassword = passwordHasherService.HashPassword(password);
         var user = await repositoryBase.FindSingleAsync(x => x.Email == email, cancellationToken);
         if (user is null)
         {
@@ -38,7 +40,7 @@ public sealed class GetLoginGoogleQueryHandler(
                 FirstName = firstName,
                 LastName = lastName,
                 ProfilePicture = userMetadata?.AvatarUrl,
-                Password = password,
+                Password = hashPassword,
                 Status = 1,
                 Role = role
             };
@@ -73,7 +75,6 @@ public sealed class GetLoginGoogleQueryHandler(
     {
         if (string.IsNullOrWhiteSpace(fullName)) return ("", "");
         var nameParts = fullName.Trim().Split([' '], StringSplitOptions.RemoveEmptyEntries);
-        return nameParts.Length == 0 ? ("", "") :
-            (string.Join(" ", nameParts[..^1]), nameParts[^1]);
+        return nameParts.Length == 0 ? ("", "") : (string.Join(" ", nameParts[..^1]), nameParts[^1]);
     }
 }
