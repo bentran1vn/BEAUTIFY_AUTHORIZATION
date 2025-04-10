@@ -23,15 +23,15 @@ public class RegisterCommandValidators : AbstractValidator<Command.RegisterComma
             .NotEmpty()
             .MinimumLength(2).WithMessage("First name must be at least 2 characters long")
             .MaximumLength(30).WithMessage("First name must exceed 30 characters")
-            .Matches(@"^[a-zA-Z]+$").WithMessage("First name must contain only letters");
+            .Matches(@"^[\p{L}]+$").WithMessage("First name must contain only letters (including accented and special characters)");
 
         RuleFor(x => x.LastName)
             .NotEmpty()
             .MinimumLength(2).WithMessage("Last name must be at least 2 characters long")
             .MaximumLength(30).WithMessage("Last name must exceed 30 characters")
-            .Matches(@"^[a-zA-Z]+$").WithMessage("Last name must contain only letters");
+            .Matches(@"^[\p{L}]+$").WithMessage("Last name must contain only letters (including accented and special characters)");
 
-       
+
         RuleFor(x => x.DateOfBirth)
             .NotEmpty()
             .Must(BeAtLeast18YearsOld).WithMessage("User must be at least 18 years old");
@@ -42,7 +42,7 @@ public class RegisterCommandValidators : AbstractValidator<Command.RegisterComma
               .MaximumLength(100).WithMessage("Address must exceed 100 characters");*/
     }
 
-    private bool BeAtLeast18YearsOld(DateOnly dateOfBirth)
+    private static bool BeAtLeast18YearsOld(DateOnly dateOfBirth)
     {
         return dateOfBirth <= DateOnly.FromDateTime(DateTime.Today).AddYears(-18);
     }
