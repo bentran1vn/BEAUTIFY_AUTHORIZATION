@@ -1,4 +1,4 @@
-﻿﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
@@ -19,6 +19,7 @@ public sealed class GetLoginGoogleQueryHandler(
 {
     // Reuse token handler instance for better performance
     private static readonly JwtSecurityTokenHandler _tokenHandler = new();
+
     public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogleCommand request,
         CancellationToken cancellationToken)
     {
@@ -81,13 +82,30 @@ public sealed class GetLoginGoogleQueryHandler(
             {
                 To = user.Email,
                 Subject = "Welcome to Beautify",
-                Body = $@"<p>Dear {user.FullName},</p><p>Welcome to Beautify!</p><p>Your password is: {password}</p>"
+                Body =
+                    $@"<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #f0f0f0; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);'>
+                    <div style='text-align: center; margin-bottom: 20px;'>
+                        <h1 style='color: #d87093; margin: 0; padding: 0;'>Beautify</h1>
+                        <p style='color: #888; font-size: 14px; margin: 5px 0;'>Your Beauty Journey Starts Here</p>
+                    </div>
+                    <div style='background-color: #fcf7f9; padding: 20px; border-radius: 6px;'>
+                        <h2 style='color: #333; margin-top: 0;'>Welcome to Beautify!</h2>
+                        <p style='color: #555; line-height: 1.5;'>Dear <span style='font-weight: bold; color: #d87093;'>{user.FullName}</span>,</p>
+                        <p style='color: #555; line-height: 1.5;'>Thank you for joining our community. We're excited to have you on board!</p>
+                        <p style='color: #555; line-height: 1.5;'>Your temporary password is:</p>
+                        <div style='background-color: #fff; border: 1px dashed #d87093; padding: 10px; text-align: center; margin: 15px 0; border-radius: 4px;'>
+                            <span style='font-family: monospace; font-size: 18px; font-weight: bold; color: #d87093;'>{password}</span>
+                        </div>
+                        <p style='color: #555; line-height: 1.5;'>For security reasons, we recommend changing your password after your first login.</p>
+                        <p style='text-align: center; color: #888; font-size: 12px;'>© 2023 Beautify. All rights reserved.</p>
+                    </div>
+                </div>"
             });
         }
 
         // Ensure user has required properties
         if (user.Role == null)
-            return Result.Failure<Response.Authenticated>(new Error("500", "User role not found"));
+            return Result.Failure<Response.Authenticated>(new Error("404", "User role not found"));
 
         // Create claims more efficiently
         var claims = new List<Claim>(11) // Pre-allocate capacity
@@ -131,14 +149,13 @@ public sealed class GetLoginGoogleQueryHandler(
         // Trim and split the name
         var nameParts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        return nameParts.Length switch
-        {
-            // Handle edge cases
-            0 => ("", ""),
-            1 => ("", nameParts[0]),
-            _ => (string.Join(" ", nameParts[..^1]), nameParts[^1])
-        };
+        // Handle edge cases
+        if (nameParts.Length == 0)
+            return ("", "");
+        if (nameParts.Length == 1)
+            return ("", nameParts[0]);
 
         // Last element is first name, everything else is last name
+        return (string.Join(" ", nameParts[..^1]), nameParts[^1]);
     }
 }
