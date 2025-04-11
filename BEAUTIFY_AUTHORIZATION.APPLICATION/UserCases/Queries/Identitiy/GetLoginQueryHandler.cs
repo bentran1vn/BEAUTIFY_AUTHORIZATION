@@ -24,7 +24,7 @@ public class GetLoginQueryHandler(
     public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
     {
         var user = await userRepository
-            .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()))
+            .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && x.Status == 1 && !x.IsDeleted)
             .Select(x => new
             {
                 UserId = x.Id,
@@ -45,7 +45,7 @@ public class GetLoginQueryHandler(
         {
             // ✅ Directly project necessary fields for `staff` instead of manual mapping
             var staff = await staffRepository
-                .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()))
+                .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && x.Status == 1 && !x.IsDeleted)
                 .Select(x => new
                 {
                     UserId = x.Id,

@@ -27,6 +27,11 @@ public class RegisterCommandHandler(
             return Result.Failure(new Error("400", "Email or phone number already exists"));
         }
 
+        if (userExisted is { Status: 0 })
+        {
+            return Result.Failure(new Error("400", "Account not verified "));
+        }
+
         if (userExisted is not null && userExisted.Email != request.Email)
         {
             return Result.Failure(new Error("400", "Email not match with this phone number"));
