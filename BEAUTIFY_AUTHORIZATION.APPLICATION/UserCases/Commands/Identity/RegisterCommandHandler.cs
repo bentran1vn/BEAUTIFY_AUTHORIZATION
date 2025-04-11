@@ -24,7 +24,7 @@ public class RegisterCommandHandler(
 
         if (userExisted is not null && userExisted.Status == 1)
         {
-            return Result.Failure(new Error("400", "Email already exists"));
+            return Result.Failure(new Error("400", "Email or phone number already exists"));
         }
 
         if (userExisted is not null && userExisted.Email != request.Email)
