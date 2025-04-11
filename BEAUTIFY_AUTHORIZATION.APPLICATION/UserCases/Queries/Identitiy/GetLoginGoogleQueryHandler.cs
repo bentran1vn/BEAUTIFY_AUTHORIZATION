@@ -39,13 +39,14 @@ public sealed class GetLoginGoogleQueryHandler(
             return Result.Failure<Response.Authenticated>(new Error("400", "Email not found in token"));
 
         // Extract user metadata
-        var userMetadataJson = payloadData.FirstOrDefault(c => c.Type == "user_metadata")?.Value;
-        var userMetadata = userMetadataJson != null
-            ? JsonSerializer.Deserialize<UserMetadata>(userMetadataJson)
-            : null;
+        /* var userMetadataJson = payloadData.FirstOrDefault(c => c.Type == "user_metadata")?.Value;
+         var userMetadata = userMetadataJson != null
+             ? JsonSerializer.Deserialize<UserMetadata>(userMetadataJson)
+             : null;*/
+        var fullname = payloadData.FirstOrDefault(c => c.Type == "name")?.Value;
 
         // Get name components
-        var (lastName, firstName) = SplitName(userMetadata?.FullName);
+        var (lastName, firstName) = SplitName(fullname);
 
         // Check if user exists
         var user = await userRepository.FindSingleAsync(x => x.Email == email, cancellationToken);
@@ -69,7 +70,7 @@ public sealed class GetLoginGoogleQueryHandler(
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
-                ProfilePicture = userMetadata?.AvatarUrl,
+                ProfilePicture = payloadData.FirstOrDefault(c => c.Type == "picture")?.Value ?? string.Empty,
                 Password = hashPassword,
                 Status = 1,
                 Role = role
