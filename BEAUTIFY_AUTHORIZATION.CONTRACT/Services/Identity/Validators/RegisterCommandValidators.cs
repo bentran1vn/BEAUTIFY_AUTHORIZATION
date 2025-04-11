@@ -12,26 +12,25 @@ public class RegisterCommandValidators : AbstractValidator<Command.RegisterComma
         RuleFor(x => x.Password)
             .NotEmpty()
             .MinimumLength(8).WithMessage("Password must be at least 8 characters long")
-            //max value is 20
             .MaximumLength(20).WithMessage("Password must be at most 20 characters long");
         //.Matches(@"[A-Z]").WithMessage("Password must contain at least one uppercase letter")
         // .Matches(@"[a-z]").WithMessage("Password must contain at least one lowercase letter")
         //  .Matches(@"\d").WithMessage("Password must contain at least one digit")
         //  .Matches(@"[\W_]").WithMessage("Password must contain at least one special character");
 
-        RuleFor(x => x.FirstName)
-            .NotEmpty()
-            .MinimumLength(2).WithMessage("First name must be at least 2 characters long")
-            .MaximumLength(30).WithMessage("First name must exceed 30 characters")
-            .Matches(@"^[\p{L}]+$").WithMessage("First name must contain only letters (including accented and special characters)");
+        /*   RuleFor(x => x.FirstName)
+               .NotEmpty()
+               .MinimumLength(2).WithMessage("First name must be at least 2 characters long")
+               .MaximumLength(30).WithMessage("First name must exceed 30 characters")
+               .Matches(@"^[\p{L}]+$").WithMessage("First name must contain only letters (including accented and special characters)");
 
-        RuleFor(x => x.LastName)
-            .NotEmpty()
-            .MinimumLength(2).WithMessage("Last name must be at least 2 characters long")
-            .MaximumLength(30).WithMessage("Last name must exceed 30 characters")
-            .Matches(@"^[\p{L}]+$").WithMessage("Last name must contain only letters (including accented and special characters)");
+           RuleFor(x => x.LastName)
+               .NotEmpty()
+               .MinimumLength(2).WithMessage("Last name must be at least 2 characters long")
+               .MaximumLength(30).WithMessage("Last name must exceed 30 characters")
+               .Matches(@"^[\p{L}]+$").WithMessage("Last name must contain only letters (including accented and special characters)");
 
-
+   */
         RuleFor(x => x.DateOfBirth)
             .NotEmpty()
             .Must(BeAtLeast18YearsOld).WithMessage("User must be at least 18 years old");
