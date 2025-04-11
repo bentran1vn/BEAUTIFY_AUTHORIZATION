@@ -77,6 +77,9 @@ public class GetLoginQueryHandler(
             };
         }
 
+        if (user.Status == 0)
+            return Result.Failure<Response.Authenticated>(new Error("400", "User Not Verified"));
+
         // ✅ Secure password check
         if (!passwordHasherService.VerifyPassword(request.Password, user.Password))
             return Result.Failure<Response.Authenticated>(new Error("401", "Wrong password"));
