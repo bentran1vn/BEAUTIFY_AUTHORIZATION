@@ -24,7 +24,7 @@ public class GetLoginQueryHandler(
     public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
     {
         var user = await userRepository
-            .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && x.Status == 1 && !x.IsDeleted)
+            .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && !x.IsDeleted)
             .Select(x => new
             {
                 UserId = x.Id,
@@ -32,6 +32,7 @@ public class GetLoginQueryHandler(
                 x.Password,
                 FullName = x.FirstName + " " + x.LastName,
                 x.ProfilePicture,
+                x.Status,
                 Role = new
                 {
                     x.Role!.Id,
@@ -45,7 +46,7 @@ public class GetLoginQueryHandler(
         {
             // ✅ Directly project necessary fields for `staff` instead of manual mapping
             var staff = await staffRepository
-                .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && x.Status == 1 && !x.IsDeleted)
+                .FindAll(x => EF.Functions.Like(x.Email.Trim(), request.Email.Trim()) && !x.IsDeleted)
                 .Select(x => new
                 {
                     UserId = x.Id,
@@ -53,6 +54,7 @@ public class GetLoginQueryHandler(
                     x.Password,
                     FullName = x.FirstName + " " + x.LastName,
                     x.ProfilePicture,
+                    x.Status,
                     Role = new
                     {
                         x.Role!.Id,
@@ -63,7 +65,8 @@ public class GetLoginQueryHandler(
 
             if (staff is null)
                 return Result.Failure<Response.Authenticated>(new Error("404", "User Not Found"));
-
+            if (staff != null && staff.Status == 0)
+                return Result.Failure<Response.Authenticated>(new Error("400", "User Not Verified"));
             user = staff with
             {
                 Role = new
