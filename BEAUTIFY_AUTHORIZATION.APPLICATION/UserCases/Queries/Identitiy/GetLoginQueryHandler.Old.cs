@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
-public class GetLoginQueryHandler(
+public class GetLoginQueryHandlerOld(
     IJwtTokenService jwtTokenService,
     ICacheService cacheService,
     IRepositoryBase<User, Guid> userRepository,
@@ -113,7 +113,7 @@ public class GetLoginQueryHandler(
 
             claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
 
-            if (mainClinicOwner.Clinic != null && mainClinicOwner.Clinic.IsActivated)
+            if (mainClinicOwner.Clinic is { IsActivated: false })
             {
                 return Result.Failure<Response.Authenticated>(new Error("404", "Your clinic is not activated, please contact with email"));
             }
