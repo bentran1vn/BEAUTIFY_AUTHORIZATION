@@ -33,7 +33,7 @@ public class GetTokenQueryHandler(IJwtTokenService jwtTokenService, ICacheServic
             RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
         };
 
-        await cacheService.SetAsync($"{nameof(Query.Login)}-UserAccount:{userAccount}", response, null,
+        await cacheService.SetAsync($"{nameof(Query.Login)}:{userAccount}", response, null,
             cancellationToken);
 
         return Result.Success(response);
