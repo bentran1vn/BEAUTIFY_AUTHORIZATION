@@ -105,12 +105,18 @@ public class GetLoginQueryHandler(
         {
             var mainClinicOwner = await userClinicRepository.FindSingleAsync(
                 x => x.UserId == user.UserId && x.Clinic != null,
-                cancellationToken);
+                cancellationToken,
+                y => y.Clinic);
 
             if (mainClinicOwner is null)
                 return Result.Failure<Response.Authenticated>(new Error("404", "Clinic Not Found"));
 
             claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
+
+            if (mainClinicOwner.Clinic != null && mainClinicOwner.Clinic.IsActivated)
+            {
+                return Result.Failure<Response.Authenticated>(new Error("404", "Your clinic is not activated, please contact with email"));
+            }
 
             // ✅ Optimized transaction query
             var sub = await systemTransactionRepository
