@@ -65,8 +65,17 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapPost("verify_code", VerifyCodeV1);
         group1.MapPost("change_password", ChangePasswordV1).RequireAuthorization();
         group1.MapGet("logout", LogoutV1).RequireAuthorization();
+        group1.MapPost("login_for_testing", LoginForTesting);
     }
 
+    private static async Task<IResult> LoginForTesting(ISender sender, QueryV1.LoginForTesting login, string Secret)
+    {
+        if (Secret != "qqq")
+            return Results.Unauthorized();
+        var result = await sender.Send(login);
+
+        return result.IsFailure ? HandlerFailure(result) : Results.Ok(result);
+    }
 
     private static async Task<IResult> LoginGoogleTest(ISender sender, QueryV1.LoginGoolgeTest login)
     {

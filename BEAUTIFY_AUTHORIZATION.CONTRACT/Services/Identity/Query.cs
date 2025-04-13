@@ -3,17 +3,18 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using System.Text;
 
 namespace BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
-
 public static class Query
 {
     public record LoginGoogleCommand(string GoogleToken) : IQuery<Response.Authenticated>;
 
     public record LoginGoolgeTest : IQuery<string>;
+
     public record LogoutGoogle : IQuery<string>;
 
     public record Login(string Email, string Password) : IQuery<Response.Authenticated>, ICacheable
     {
         public bool BypassCache => true;
+
         public string CacheKey
         {
             get
@@ -24,9 +25,12 @@ public static class Query
                 return builder.ToString();
             }
         }
+
         public int SlidingExpirationInMinutes => 10;
         public int AbsoluteExpirationInMinutes => 15;
     }
 
     public record Token(string AccessToken, string RefreshToken) : IQuery<Response.Authenticated>;
+
+    public record LoginForTesting(string Email) : IQuery<string>;
 }
