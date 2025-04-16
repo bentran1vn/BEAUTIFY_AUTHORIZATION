@@ -25,7 +25,7 @@ public class GetLoginQueryHandler(
     : IQueryHandler<Query.Login, Response.Authenticated>
 {
     // Cache clinic role names for better performance
-    private static readonly string[] ClinicRoles = { "Clinic Admin", Constant.Role.CLINIC_STAFF };
+    private static readonly string[] ClinicRoles = [Constant.Role.CLINIC_ADMIN, Constant.Role.CLINIC_STAFF];
 
     public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
     {
@@ -79,6 +79,7 @@ public class GetLoginQueryHandler(
                 FullName = x.FirstName + " " + x.LastName,
                 x.ProfilePicture,
                 x.Status,
+                x.PhoneNumber,
                 Role = new
                 {
                     x.Role!.Id,
@@ -100,6 +101,7 @@ public class GetLoginQueryHandler(
                     FullName = x.FirstName + " " + x.LastName,
                     x.ProfilePicture,
                     x.Status,
+                    x.PhoneNumber,
                     Role = new
                     {
                         x.Role!.Id,
@@ -121,10 +123,9 @@ public class GetLoginQueryHandler(
         if (!passwordHasherService.VerifyPassword(password, user.Password))
             return Result.Failure<dynamic>(new Error("401", "Wrong password"));
 
-        if (user.Status == 0)
-            return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
-
-        return Result.Success<dynamic>(user);
+        return user.Status == 0
+            ? Result.Failure<dynamic>(new Error("400", "User Not Verified"))
+            : Result.Success<dynamic>(user);
     }
 
     /// <summary>
@@ -144,7 +145,8 @@ public class GetLoginQueryHandler(
             new("Name", user.FullName),
             new("Email", user.Email),
             new("ProfilePicture", user.ProfilePicture ?? string.Empty),
-            new("RoleName", user.Role.Name)
+            new("RoleName", user.Role.Name),
+            new("PhoneNumber", user.PhoneNumber ?? string.Empty),
         };
     }
 
@@ -166,7 +168,7 @@ public class GetLoginQueryHandler(
         claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
 
         // Check if clinic is activated
-        if (mainClinicOwner.Clinic != null && mainClinicOwner.Clinic.IsActivated)
+        if (mainClinicOwner.Clinic is { IsActivated: true })
             return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
 
         // Add subscription information
@@ -245,7 +247,7 @@ public class GetLoginQueryHandler(
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
 
         // Cache the authentication response
-        string cacheKey = $"Login:{normalizedEmail}";
+        var cacheKey = $"Login:{normalizedEmail}";
         await cacheService.SetAsync(cacheKey, response, options, cancellationToken);
 
         return Result.Success(response);
