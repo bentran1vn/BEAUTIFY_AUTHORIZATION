@@ -168,7 +168,7 @@ public class GetLoginQueryHandler(
         claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
 
         // Check if clinic is activated
-        if (mainClinicOwner.Clinic is { IsActivated: true })
+        if (mainClinicOwner.Clinic is { IsActivated: false })
             return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
 
         // Add subscription information
