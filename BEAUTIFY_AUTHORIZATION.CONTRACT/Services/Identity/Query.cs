@@ -15,7 +15,7 @@ public static class Query
             {
                 var builder = new StringBuilder();
                 builder.Append($"{nameof(Login)}");
-                builder.Append($"-UserAccount:{GoogleToken}");
+                builder.Append($"-UserAccount:{Email}");
                 return builder.ToString();
             }
         }
