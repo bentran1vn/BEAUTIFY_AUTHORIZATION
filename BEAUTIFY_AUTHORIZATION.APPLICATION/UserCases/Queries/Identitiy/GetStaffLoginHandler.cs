@@ -222,7 +222,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
 
         // Cache the authentication response
-        var cacheKey = $"Login:UserAccount:{normalizedEmail}";
+        var cacheKey = $"Login-UserAccount:{normalizedEmail}";
         await cacheService.SetAsync(cacheKey, response, options, cancellationToken);
 
         return Result.Success(response);

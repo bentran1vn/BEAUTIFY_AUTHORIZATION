@@ -28,6 +28,21 @@ public static class Command
     public record ChangePasswordCommandBody(
         string NewPassword
     );
+    
+    public record ChangePasswordStaffCommandBody(
+        string NewPassword,
+        string OldPassword,
+        TimeSpan? WorkingTimeStart,
+        TimeSpan? WorkingTimeEnd
+    );
+    
+    public record ChangePasswordStaffCommand(
+        string Email,
+        string OldPassword,
+        string NewPassword,
+        TimeSpan? WorkingTimeStart,
+        TimeSpan? WorkingTimeEnd
+    ) : ICommand;
 
     public record VerifyCodeCommand(
         string Email,
