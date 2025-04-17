@@ -8,17 +8,19 @@ using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Constrants;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
 public sealed class GetLoginGoogleQueryHandler(
     IRepositoryBase<User, Guid> userRepository,
     IJwtTokenService jwtTokenService,
     IMailService mailService,
+    ICacheService cacheService,
     IRepositoryBase<Role, Guid> roleRepository,
     IPasswordHasherService passwordHasherService) : IQueryHandler<Query.LoginGoogleCommand, Response.Authenticated>
 {
     // Reuse token handler instance for better performance
-    private static readonly JwtSecurityTokenHandler _tokenHandler = new();
+    private static readonly JwtSecurityTokenHandler TokenHandler = new();
 
     public async Task<Result<Response.Authenticated>> Handle(Query.LoginGoogleCommand request,
         CancellationToken cancellationToken)
@@ -28,7 +30,7 @@ public sealed class GetLoginGoogleQueryHandler(
             return Result.Failure<Response.Authenticated>(new Error("400", "Google token is required"));
 
         // Use static token handler for better performance
-        if (_tokenHandler.ReadToken(request.GoogleToken) is not JwtSecurityToken payload)
+        if (TokenHandler.ReadToken(request.GoogleToken) is not JwtSecurityToken payload)
             return Result.Failure<Response.Authenticated>(new Error("401", "Invalid Google Token format"));
 
         // Extract claims
@@ -128,12 +130,26 @@ public sealed class GetLoginGoogleQueryHandler(
         var accessToken = jwtTokenService.GenerateAccessToken(claims);
         var refreshToken = jwtTokenService.GenerateRefreshToken();
 
-        return Result.Success(new Response.Authenticated
+        var response = new Response.Authenticated
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = DateTime.UtcNow.AddHours(5) // Set expiry time to match token
-        });
+        };
+        
+        // Configure cache options using request parameters or defaults
+        var slidingExpiration = request.SlidingExpirationInMinutes > 0 ? request.SlidingExpirationInMinutes : 10;
+        var absoluteExpiration = request.AbsoluteExpirationInMinutes > 0 ? request.AbsoluteExpirationInMinutes : 15;
+
+        var options = new DistributedCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(slidingExpiration))
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
+
+        // Cache the authentication response
+        var cacheKey = $"Login-UserAccount:{request.Email}";
+        await cacheService.SetAsync(cacheKey, response, options, cancellationToken);
+
+        return Result.Success(response);
     }
 
     /// <summary>
