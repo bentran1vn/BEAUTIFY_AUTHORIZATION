@@ -12,7 +12,7 @@ public class GetTokenQueryHandler(IJwtTokenService jwtTokenService, ICacheServic
         var (claimPrincipal, isExpired) = jwtTokenService.GetPrincipalFromExpiredToken(request.AccessToken);
         var userAccount = claimPrincipal.Identity!.Name;
         var cacheData =
-            await cacheService.GetAsync<Response.Authenticated>($"{nameof(Query.Login)}:{userAccount}",
+            await cacheService.GetAsync<Response.Authenticated>($"{nameof(Query.Login)}-UserAccount:{userAccount}",
                 cancellationToken);
 
         if (cacheData == null || !cacheData.RefreshToken!.Equals(request.RefreshToken))
