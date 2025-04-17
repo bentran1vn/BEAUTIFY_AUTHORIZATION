@@ -64,7 +64,10 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapPost("refresh_token", RefreshTokenV1);
         group1.MapPost("forgot_password", ForgotPasswordV1);
         group1.MapPost("verify_code", VerifyCodeV1);
-        group1.MapPost("change_password", ChangePasswordV1).RequireAuthorization();
+        group1.MapPost("change_password", ChangePasswordV1)
+            .RequireAuthorization();
+        group1.MapPost("change_password/staff", ChangePasswordStaffV1)
+            .RequireAuthorization();
         group1.MapGet("logout", LogoutV1).RequireAuthorization();
         group1.MapPost("login_for_testing", LoginForTesting);
     }
@@ -155,6 +158,17 @@ public class AuthApi : ApiEndpoint, ICarterModule
         var (claimPrincipal, _) = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
         var email = claimPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
         var result = await sender.Send(new CommandV1.ChangePasswordCommand(email, command.NewPassword));
+
+        return result.IsFailure ? HandlerFailure(result) : Results.Ok(result);
+    }
+    
+    private static async Task<IResult> ChangePasswordStaffV1(ISender sender, HttpContext context,
+        IJwtTokenService jwtTokenService, [FromBody] CommandV1.ChangePasswordStaffCommandBody command)
+    {
+        var accessToken = await context.GetTokenAsync("access_token");
+        var (claimPrincipal, _) = jwtTokenService.GetPrincipalFromExpiredToken(accessToken!);
+        var email = claimPrincipal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)!.Value;
+        var result = await sender.Send(new CommandV1.ChangePasswordStaffCommand(email, command.OldPassword, command.NewPassword, command.WorkingTimeStart, command.WorkingTimeEnd));
 
         return result.IsFailure ? HandlerFailure(result) : Results.Ok(result);
     }

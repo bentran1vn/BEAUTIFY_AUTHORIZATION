@@ -27,7 +27,7 @@ public class ChangePasswordCommandHandler(
 
         user.Password = hashingPassword;
 
-        await cacheService.RemoveAsync($"{nameof(Query.Login)}-UserAccount:{user.Email}", cancellationToken);
+        await cacheService.RemoveAsync($"Login-UserAccount:{user.Email}", cancellationToken);
 
         return Result.Success("Change Password Successfully !");
     }
