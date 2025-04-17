@@ -30,6 +30,7 @@ public class AuthApi : ApiEndpoint, ICarterModule
         group1.MapPost("login_google_test", LoginGoogleTest);
         group1.MapGet("logout_google", LogoutGoogleV1).RequireAuthorization();
         group1.MapPost("login", LoginV1);
+        group1.MapPost("login/staff", LoginStaffV1);
         group1.MapPost("register", RegisterV1)
             .WithName("Register")
             .WithSummary("Registers a new user.")
@@ -99,6 +100,13 @@ public class AuthApi : ApiEndpoint, ICarterModule
     }
 
     private static async Task<IResult> LoginV1(ISender sender, [FromBody] QueryV1.Login login)
+    {
+        var result = await sender.Send(login);
+
+        return result.IsFailure ? HandlerFailure(result) : Results.Ok(result);
+    }
+    
+    private static async Task<IResult> LoginStaffV1(ISender sender, [FromBody] QueryV1.StaffLogin login)
     {
         var result = await sender.Send(login);
 
