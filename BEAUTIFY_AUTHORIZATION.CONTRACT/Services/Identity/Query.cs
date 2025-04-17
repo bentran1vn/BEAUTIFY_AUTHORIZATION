@@ -5,7 +5,24 @@ using System.Text;
 namespace BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
 public static class Query
 {
-    public record LoginGoogleCommand(string GoogleToken) : IQuery<Response.Authenticated>;
+    public record LoginGoogleCommand(string Email, string GoogleToken) : IQuery<Response.Authenticated>, ICacheable
+    {
+        public bool BypassCache => true;
+
+        public string CacheKey
+        {
+            get
+            {
+                var builder = new StringBuilder();
+                builder.Append($"{nameof(Login)}");
+                builder.Append($"-UserAccount:{GoogleToken}");
+                return builder.ToString();
+            }
+        }
+
+        public int SlidingExpirationInMinutes => 10;
+        public int AbsoluteExpirationInMinutes => 15;
+    };
 
     public record LoginGoolgeTest : IQuery<string>;
 
