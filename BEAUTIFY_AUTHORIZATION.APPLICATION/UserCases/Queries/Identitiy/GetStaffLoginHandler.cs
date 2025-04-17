@@ -1,26 +1,28 @@
-using System.Security.Claims;
 using BEAUTIFY_AUTHORIZATION.CONTRACT.Services.Identity;
-using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
-using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Messages;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.CONTRACT.Abstractions.Shared;
+using System.Security.Claims;
+using BEAUTIFY_AUTHORIZATION.DOMAIN.Entities;
+using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Abstractions;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Constrants;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
-/// <summary>
-/// Handles user login authentication and token generation
-/// </summary>
-public class GetLoginQueryHandler(
-    IJwtTokenService jwtTokenService,
+
+public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
     ICacheService cacheService,
-    IRepositoryBase<User, Guid> userRepository,
-    IPasswordHasherService passwordHasherService)
-    : IQueryHandler<Query.Login, Response.Authenticated>
+    IRepositoryBase<Staff, Guid> staffRepository,
+    IPasswordHasherService passwordHasherService,
+    IRepositoryBase<UserClinic, Guid> userClinicRepository,
+    IRepositoryBase<SystemTransaction, Guid> systemTransactionRepository,
+    IRepositoryBase<SubscriptionPackage, Guid> subscriptionPackageRepository) : IQueryHandler<Query.StaffLogin, Response.Authenticated>
 {
-    public async Task<Result<Response.Authenticated>> Handle(Query.Login request, CancellationToken cancellationToken)
+    // Cache clinic role names for better performance
+    private static readonly string[] ClinicRoles = [Constant.Role.CLINIC_ADMIN, Constant.Role.CLINIC_STAFF];
+    
+    public async Task<Result<Response.Authenticated>> Handle(Query.StaffLogin request, CancellationToken cancellationToken)
     {
         try
         {
@@ -30,6 +32,7 @@ public class GetLoginQueryHandler(
             // Find authenticated user (either regular user or staff)
             var authenticatedUser =
                 await FindAuthenticatedUserAsync(normalizedEmail, request.Password, cancellationToken);
+            
             if (authenticatedUser.IsFailure)
                 return Result.Failure<Response.Authenticated>(authenticatedUser.Error);
 
@@ -37,6 +40,15 @@ public class GetLoginQueryHandler(
 
             // Generate claims for the authenticated user
             var claims = GenerateBaseClaims(user);
+
+            // Add clinic-specific claims if user is a clinic admin or staff
+            if (Array.IndexOf(ClinicRoles, user.Role.Name) < 0)
+                return await GenerateAuthResponseAsync(claims, normalizedEmail, request, cancellationToken);
+            
+            var clinicResult = await AddClinicClaimsAsync(claims, user.UserId, cancellationToken);
+            
+            if (clinicResult.IsFailure)
+                return Result.Failure<Response.Authenticated>(clinicResult.Error);
 
             // Generate tokens and create response
             return await GenerateAuthResponseAsync(claims, normalizedEmail, request, cancellationToken);
@@ -55,7 +67,7 @@ public class GetLoginQueryHandler(
         CancellationToken cancellationToken)
     {
         // Try to find user first
-        var user = await userRepository
+        var staff = await staffRepository
             .FindAll(x => EF.Functions.Like(x.Email.ToLower(), normalizedEmail) && !x.IsDeleted)
             .Select(x => new
             {
@@ -74,19 +86,19 @@ public class GetLoginQueryHandler(
             })
             .FirstOrDefaultAsync(cancellationToken);
 
-        // If user not found, try staff
-        if (user is null)
+        if (staff is null)
             return Result.Failure<dynamic>(new Error("404", "User Not Found"));
-        
-        if (user.Status == 0)
+
+        if (staff.Status == 0)
             return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
 
         // Verify password and user status
-        if (!passwordHasherService.VerifyPassword(password, user.Password))
+        if (!passwordHasherService.VerifyPassword(password, staff.Password))
             return Result.Failure<dynamic>(new Error("401", "Wrong password"));
 
-        return Result.Success<dynamic>(user);
+        return Result.Success<dynamic>(staff);
     }
+
 
     /// <summary>
     /// Generates base claims for the authenticated user
@@ -109,6 +121,76 @@ public class GetLoginQueryHandler(
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
         };
     }
+
+    /// <summary>
+    /// Adds clinic-related claims for clinic users
+    /// </summary>
+    private async Task<Result> AddClinicClaimsAsync(List<Claim> claims, Guid userId,
+        CancellationToken cancellationToken)
+    {
+        // Get clinic information for the user
+        var mainClinicOwner = await userClinicRepository.FindSingleAsync(
+            x => x.UserId == userId && x.Clinic != null,
+            cancellationToken,
+            y => y.Clinic);
+
+        if (mainClinicOwner is null)
+            return Result.Failure(new Error("404", "Clinic Not Found"));
+
+        claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
+
+        // Check if clinic is activated
+        if (mainClinicOwner.Clinic is { IsActivated: false })
+            return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
+        
+        claims.Add(new Claim("IsFirstLogin", (mainClinicOwner.Clinic?.IsFirstLogin == null ? "false" :
+                mainClinicOwner.Clinic.IsFirstLogin!.ToString())));
+        
+        // Add subscription information
+        await AddSubscriptionClaimsAsync(claims, mainClinicOwner.ClinicId, cancellationToken);
+
+        return Result.Success();
+    }
+    
+    /// <summary>
+    /// Adds subscription-related claims for clinic users
+    /// </summary>
+    private async Task AddSubscriptionClaimsAsync(List<Claim> claims, Guid clinicId,
+        CancellationToken cancellationToken)
+    {
+        // Try to get the most recent transaction for the clinic
+        var subscription = await systemTransactionRepository
+            .FindAll(x => x.ClinicId == clinicId && !x.IsDeleted)
+            .OrderByDescending(x => x.TransactionDate)
+            .Select(x => new
+            {
+                x.SubscriptionPackageId,
+                x.SubscriptionPackage!.Name,
+                ExpiryDate = x.TransactionDate.AddDays(x.SubscriptionPackage.Duration)
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (subscription is not null)
+        {
+            // Add subscription information to claims
+            claims.Add(new Claim("SubscriptionPackageId", subscription.SubscriptionPackageId.ToString()));
+            claims.Add(new Claim("SubscriptionPackageName", subscription.Name));
+            claims.Add(new Claim("SubscriptionPackageExpire", subscription.ExpiryDate.ToString("o")));
+            return;
+        }
+
+        // If no subscription found, use the minimum price package as trial
+        var minSubscription = await subscriptionPackageRepository
+            .FindAll()
+            .OrderBy(x => x.Price)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (minSubscription is null)
+            throw new InvalidOperationException("No subscription packages found in the system");
+
+        claims.Add(new Claim("SubscriptionPackageId", minSubscription.Id.ToString()));
+        claims.Add(new Claim("SubscriptionPackageName", minSubscription.Name));
+    }
     
     /// <summary>
     /// Generates authentication response with tokens and caches it
@@ -116,7 +198,7 @@ public class GetLoginQueryHandler(
     private async Task<Result<Response.Authenticated>> GenerateAuthResponseAsync(
         List<Claim> claims,
         string normalizedEmail,
-        Query.Login request,
+        Query.StaffLogin request,
         CancellationToken cancellationToken)
     {
         // Generate tokens

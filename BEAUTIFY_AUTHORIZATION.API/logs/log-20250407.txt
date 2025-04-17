@@ -1,0 +1,110 @@
+2025-04-07 15:40:35.126 +07:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-04-07 15:40:35.240 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'ProcedurePriceType'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-04-07 15:40:40.411 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (5752 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhODM4Zjg2YS0wMTA1LTRiYjEtOTNlOS02Nzc1OTAyYjViZjkiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MDE4ODMxLCJpYXQiOjE3NDQwMTUyMzEsImVtYWlsIjoidGFudGR0c2UxNzE3NTdAZnB0LmVkdS52biIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSmduMlMxd296NXNCalVkUml1czVoVFlQNHJoZDJURkFQOFRYNTQ4Vi1iV1V3RVI3ST1zOTYtYyIsImN1c3RvbV9jbGFpbXMiOnsiaGQiOiJmcHQuZWR1LnZuIn0sImVtYWlsIjoidGFudGR0c2UxNzE3NTdAZnB0LmVkdS52biIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJUcmFuIERpbmggVGhpZW4gVGFuIChLMTcgSENNKSIsImlzcyI6Imh0dHBzOi8vYWNjb3VudHMuZ29vZ2xlLmNvbSIsIm5hbWUiOiJUcmFuIERpbmggVGhpZW4gVGFuIChLMTcgSENNKSIsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pnbjJTMXdvejVzQmpVZFJpdXM1aFRZUDRyaGQyVEZBUDhUWDU0OFYtYldVd0VSN0k9czk2LWMiLCJwcm92aWRlcl9pZCI6IjEwMzk1MjU0NzYwNTIyODAxNTI2NCIsInN1YiI6IjEwMzk1MjU0NzYwNTIyODAxNTI2NCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6Im9hdXRoIiwidGltZXN0YW1wIjoxNzQ0MDE1MjMxfV0sInNlc3Npb25faWQiOiJmNjg4MWMwNi1iNjg4LTQ5MGEtYTljZi05ZDdmYjAxNGFiNDkiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.sXQcmGnrZoIcSs0tcX705EMGVohUsisFeNUDueSgZZw","$type":"LoginGoogleCommand"}
+2025-04-07 15:40:40.461 +07:00 [ERR] Failed executing DbCommand (99ms) [Parameters=[@p0='0809fbed-8bba-479f-a25c-843b00ef1eaf', @p1=NULL (Size = 100), @p2=NULL (Size = 100), @p3='0001-01-01T00:00:00.0000000+00:00', @p4=NULL (DbType = Date), @p5=NULL (Size = 100), @p6='tantdtse171757@fpt.edu.vn' (Nullable = false) (Size = 100), @p7='HCM)' (Nullable = false) (Size = 50), @p8='False', @p9='Tran Dinh Thien Tan (K17' (Nullable = false) (Size = 50), @p10=NULL (DbType = DateTimeOffset), @p11='wF7ur5PhyE/wwnKr0MWLTw==:7ut+n89qaRVvZOL9qinq/X4AOwqiSGDp4zRD0HVo3EY=' (Nullable = false) (Size = 255), @p12=NULL (Size = 14), @p13='https://lh3.googleusercontent.com/a/ACg8ocJgn2S1woz5sBjUdRius5hTYP4rhd2TFAP8TX548V-bWUwER7I=s96-c' (Size = 250), @p14=NULL (Size = 250), @p15='b5db3ea1-f81c-465e-a23b-da7d6d361930' (Nullable = true), @p16='1', @p17=NULL (Size = 100)], CommandType='"Text"', CommandTimeout='30']
+SET IMPLICIT_TRANSACTIONS OFF;
+SET NOCOUNT ON;
+INSERT INTO [User] ([Id], [Address], [City], [CreatedOnUtc], [DateOfBirth], [District], [Email], [FirstName], [IsDeleted], [LastName], [ModifiedOnUtc], [Password], [PhoneNumber], [ProfilePicture], [RefreshToken], [RoleId], [Status], [Ward])
+VALUES (@p0, @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9, @p10, @p11, @p12, @p13, @p14, @p15, @p16, @p17);
+2025-04-07 15:40:40.576 +07:00 [ERR] An exception occurred in the database while saving changes for context type 'BEAUTIFY_AUTHORIZATION.PERSISTENCE.ApplicationDbContext'.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.User' with unique index 'IX_User_Email'. The duplicate key value is (tantdtse171757@fpt.edu.vn).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:3a1c14c9-7023-46e3-8792-a15bff9dcff1
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.User' with unique index 'IX_User_Email'. The duplicate key value is (tantdtse171757@fpt.edu.vn).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:3a1c14c9-7023-46e3-8792-a15bff9dcff1
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+2025-04-07 15:40:40.659 +07:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+Microsoft.EntityFrameworkCore.DbUpdateException: An error occurred while saving the entity changes. See the inner exception for details.
+ ---> Microsoft.Data.SqlClient.SqlException (0x80131904): Cannot insert duplicate key row in object 'dbo.User' with unique index 'IX_User_Email'. The duplicate key value is (tantdtse171757@fpt.edu.vn).
+The statement has been terminated.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__211_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:3a1c14c9-7023-46e3-8792-a15bff9dcff1
+Error Number:2601,State:1,Class:14
+   --- End of inner exception stack trace ---
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.SqlServer.Update.Internal.SqlServerModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 36
+--- End of stack trace from previous location ---
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 38
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 31
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.PerformancePipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.ValidationPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity.AuthApi.LoginGoogleV1(ISender sender, LoginGoogleCommand login) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.PRESENTATION/APIs/Identity/AuthApi.cs:line 80
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BEAUTIFY_AUTHORIZATION.API.Middlewares.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.API/Middlewares/ExceptionHandlingMiddleware.cs:line 18
+2025-04-07 18:08:41.092 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (5047 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNmFjMGFjNS1mYTk2LTQ0ODItODAyOS01NmZjNjc2NDNjNzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MDI2MTk1LCJpYXQiOjE3NDQwMjI1OTUsImVtYWlsIjoidGFuMTgyMjA1QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSUR3OThtTUwwWUIyRDdBRHRpNmZqN0Z1R20zQldIQ0tBOXJlcHhCcEYxV25aamxTQ1E9czk2LWMiLCJlbWFpbCI6InRhbjE4MjIwNUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoiVGFuIFRyYW4iLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYW1lIjoiVGFuIFRyYW4iLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJRHc5OG1NTDBZQjJEN0FEdGk2Zmo3RnVHbTNCV0hDS0E5cmVweEJwRjFXblpqbFNDUT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIiwic3ViIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NDQwMjI1OTV9XSwic2Vzc2lvbl9pZCI6IjJhNTY5ZjMyLWM3MGEtNGUyNS1hOGY4LTU3NTZhY2I4YTViMyIsImlzX2Fub255bW91cyI6ZmFsc2V9.X7Ncg4XkUZS-khsdC0E3jsK0I3pQtr-R-ozgimmvR-o","$type":"LoginGoogleCommand"}
+2025-04-07 19:21:39.976 +07:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-04-07 19:21:40.113 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'ProcedurePriceType'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.

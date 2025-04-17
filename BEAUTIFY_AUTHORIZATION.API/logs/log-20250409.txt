@@ -1,0 +1,125 @@
+2025-04-09 01:21:19.674 +07:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-04-09 01:21:19.820 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'ProcedurePriceType'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-04-09 01:21:26.481 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (7383 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNmFjMGFjNS1mYTk2LTQ0ODItODAyOS01NmZjNjc2NDNjNzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MTQwMDE0LCJpYXQiOjE3NDQxMzY0MTQsImVtYWlsIjoidGFuMTgyMjA1QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSUR3OThtTUwwWUIyRDdBRHRpNmZqN0Z1R20zQldIQ0tBOXJlcHhCcEYxV25aamxTQ1E9czk2LWMiLCJlbWFpbCI6InRhbjE4MjIwNUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoiVGFuIFRyYW4iLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYW1lIjoiVGFuIFRyYW4iLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJRHc5OG1NTDBZQjJEN0FEdGk2Zmo3RnVHbTNCV0hDS0E5cmVweEJwRjFXblpqbFNDUT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIiwic3ViIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NDQxMzY0MTR9XSwic2Vzc2lvbl9pZCI6IjNjM2I1NWUzLTE4YTItNDY4OS1hMzE3LTM2NGE1N2RiMWE0OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.k8OiowKxUTuw1oH8VrUhnMhlDnW5MCNBcuUfTMKF4G0","$type":"LoginGoogleCommand"}
+2025-04-09 11:52:40.303 +07:00 [WRN] Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data; this mode should only be enabled during development.
+2025-04-09 11:52:40.468 +07:00 [WRN] No store type was specified for the decimal property 'Price' on entity type 'ProcedurePriceType'. This will cause values to be silently truncated if they do not fit in the default precision and scale. Explicitly specify the SQL server column type that can accommodate all the values in 'OnModelCreating' using 'HasColumnType', specify precision and scale using 'HasPrecision', or configure a value converter using 'HasConversion'.
+2025-04-09 11:52:45.673 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (6092 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNmFjMGFjNS1mYTk2LTQ0ODItODAyOS01NmZjNjc2NDNjNzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MTc3ODkyLCJpYXQiOjE3NDQxNzQyOTIsImVtYWlsIjoidGFuMTgyMjA1QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSUR3OThtTUwwWUIyRDdBRHRpNmZqN0Z1R20zQldIQ0tBOXJlcHhCcEYxV25aamxTQ1E9czk2LWMiLCJlbWFpbCI6InRhbjE4MjIwNUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoiVGFuIFRyYW4iLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYW1lIjoiVGFuIFRyYW4iLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJRHc5OG1NTDBZQjJEN0FEdGk2Zmo3RnVHbTNCV0hDS0E5cmVweEJwRjFXblpqbFNDUT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIiwic3ViIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NDQxMzY0MTR9XSwic2Vzc2lvbl9pZCI6IjNjM2I1NWUzLTE4YTItNDY4OS1hMzE3LTM2NGE1N2RiMWE0OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.6xgxTwOx_hBc_ITmZtfRENtYN4HoAam5-E0kiP4eMWs","$type":"LoginGoogleCommand"}
+2025-04-09 11:59:41.914 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (5157 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNmFjMGFjNS1mYTk2LTQ0ODItODAyOS01NmZjNjc2NDNjNzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MTc3ODkyLCJpYXQiOjE3NDQxNzQyOTIsImVtYWlsIjoidGFuMTgyMjA1QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSUR3OThtTUwwWUIyRDdBRHRpNmZqN0Z1R20zQldIQ0tBOXJlcHhCcEYxV25aamxTQ1E9czk2LWMiLCJlbWFpbCI6InRhbjE4MjIwNUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoiVGFuIFRyYW4iLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYW1lIjoiVGFuIFRyYW4iLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJRHc5OG1NTDBZQjJEN0FEdGk2Zmo3RnVHbTNCV0hDS0E5cmVweEJwRjFXblpqbFNDUT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIiwic3ViIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NDQxMzY0MTR9XSwic2Vzc2lvbl9pZCI6IjNjM2I1NWUzLTE4YTItNDY4OS1hMzE3LTM2NGE1N2RiMWE0OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.6xgxTwOx_hBc_ITmZtfRENtYN4HoAam5-E0kiP4eMWs","$type":"LoginGoogleCommand"}
+2025-04-09 12:00:24.823 +07:00 [WRN] Long Time Running - Request Details: LoginGoogleCommand (7650 milliseconds) {"GoogleToken":"eyJhbGciOiJIUzI1NiIsImtpZCI6IjYrcXU0UWFPZWJscmFCUmkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3BtdG94ZmRucnByZG9uZ3h6anV6LnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiJhNmFjMGFjNS1mYTk2LTQ0ODItODAyOS01NmZjNjc2NDNjNzciLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzQ0MTc3ODkyLCJpYXQiOjE3NDQxNzQyOTIsImVtYWlsIjoidGFuMTgyMjA1QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZ29vZ2xlIiwicHJvdmlkZXJzIjpbImdvb2dsZSJdfSwidXNlcl9tZXRhZGF0YSI6eyJhdmF0YXJfdXJsIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jSUR3OThtTUwwWUIyRDdBRHRpNmZqN0Z1R20zQldIQ0tBOXJlcHhCcEYxV25aamxTQ1E9czk2LWMiLCJlbWFpbCI6InRhbjE4MjIwNUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZnVsbF9uYW1lIjoiVGFuIFRyYW4iLCJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJuYW1lIjoiVGFuIFRyYW4iLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJRHc5OG1NTDBZQjJEN0FEdGk2Zmo3RnVHbTNCV0hDS0E5cmVweEJwRjFXblpqbFNDUT1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIiwic3ViIjoiMTA5Mjc0MTc4Nzc5NTAwMjMzOTAxIn0sInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiYWFsIjoiYWFsMSIsImFtciI6W3sibWV0aG9kIjoib2F1dGgiLCJ0aW1lc3RhbXAiOjE3NDQxMzY0MTR9XSwic2Vzc2lvbl9pZCI6IjNjM2I1NWUzLTE4YTItNDY4OS1hMzE3LTM2NGE1N2RiMWE0OCIsImlzX2Fub255bW91cyI6ZmFsc2V9.6xgxTwOx_hBc_ITmZtfRENtYN4HoAam5-E0kiP4eMWs","$type":"LoginGoogleCommand"}
+2025-04-09 13:04:05.836 +07:00 [ERR] nodename nor servname provided, or not known
+System.Net.Sockets.SocketException (00000005, 0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Dns.GetHostEntryOrAddressesCore(String hostName, Boolean justAddresses, AddressFamily addressFamily, Nullable`1 startingTimestamp)
+   at System.Net.Dns.<>c.<GetHostEntryOrAddressesCoreAsync>b__33_0(Object s, Int64 startingTimestamp)
+   at System.Net.Dns.<>c__DisplayClass39_0`1.<RunAsync>b__0(Task <p0>, Object <p1>)
+   at System.Threading.Tasks.ContinuationResultTaskFromTask`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, CancellationToken cancellationToken)
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, Int32 timeout, CancellationToken cancellationToken)
+   at MailKit.MailService.ConnectNetworkAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.INFRASTRUCTURE.Mail.MailService.SendMail(MailContent mailContent)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy.GetLoginGoogleQueryHandler.Handle(LoginGoogleCommand request, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/UserCases/Queries/Identitiy/GetLoginGoogleQueryHandler.cs:line 63
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.TracingPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 35
+--- End of stack trace from previous location ---
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 38
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 31
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.PerformancePipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.ValidationPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity.AuthApi.LoginGoogleV1(ISender sender, LoginGoogleCommand login) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.PRESENTATION/APIs/Identity/AuthApi.cs:line 80
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BEAUTIFY_AUTHORIZATION.API.Middlewares.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.API/Middlewares/ExceptionHandlingMiddleware.cs:line 18
+2025-04-09 13:17:54.939 +07:00 [ERR] nodename nor servname provided, or not known
+System.Net.Sockets.SocketException (00000005, 0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Dns.GetHostEntryOrAddressesCore(String hostName, Boolean justAddresses, AddressFamily addressFamily, Nullable`1 startingTimestamp)
+   at System.Net.Dns.<>c.<GetHostEntryOrAddressesCoreAsync>b__33_0(Object s, Int64 startingTimestamp)
+   at System.Net.Dns.<>c__DisplayClass39_0`1.<RunAsync>b__0(Task <p0>, Object <p1>)
+   at System.Threading.Tasks.ContinuationResultTaskFromTask`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, CancellationToken cancellationToken)
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, Int32 timeout, CancellationToken cancellationToken)
+   at MailKit.MailService.ConnectNetworkAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.INFRASTRUCTURE.Mail.MailService.SendMail(MailContent mailContent)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy.GetLoginGoogleQueryHandler.Handle(LoginGoogleCommand request, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/UserCases/Queries/Identitiy/GetLoginGoogleQueryHandler.cs:line 63
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.TracingPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 35
+--- End of stack trace from previous location ---
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 38
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 31
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.PerformancePipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.ValidationPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity.AuthApi.LoginGoogleV1(ISender sender, LoginGoogleCommand login) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.PRESENTATION/APIs/Identity/AuthApi.cs:line 80
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BEAUTIFY_AUTHORIZATION.API.Middlewares.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.API/Middlewares/ExceptionHandlingMiddleware.cs:line 18
+2025-04-09 13:35:44.745 +07:00 [ERR] nodename nor servname provided, or not known
+System.Net.Sockets.SocketException (00000005, 0xFFFDFFFF): nodename nor servname provided, or not known
+   at System.Net.Dns.GetHostEntryOrAddressesCore(String hostName, Boolean justAddresses, AddressFamily addressFamily, Nullable`1 startingTimestamp)
+   at System.Net.Dns.<>c.<GetHostEntryOrAddressesCoreAsync>b__33_0(Object s, Int64 startingTimestamp)
+   at System.Net.Dns.<>c__DisplayClass39_0`1.<RunAsync>b__0(Task <p0>, Object <p1>)
+   at System.Threading.Tasks.ContinuationResultTaskFromTask`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(Thread threadPoolThread, ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, CancellationToken cancellationToken)
+   at MailKit.Net.SocketUtils.ConnectAsync(String host, Int32 port, IPEndPoint localEndPoint, Int32 timeout, CancellationToken cancellationToken)
+   at MailKit.MailService.ConnectNetworkAsync(String host, Int32 port, CancellationToken cancellationToken)
+   at MailKit.Net.Smtp.SmtpClient.ConnectAsync(String host, Int32 port, SecureSocketOptions options, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.INFRASTRUCTURE.Mail.MailService.SendMail(MailContent mailContent)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy.GetLoginGoogleQueryHandler.Handle(LoginGoogleCommand request, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/UserCases/Queries/Identitiy/GetLoginGoogleQueryHandler.cs:line 63
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.TracingPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 35
+--- End of stack trace from previous location ---
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.<>c__DisplayClass2_0.<<Handle>b__0>d.MoveNext() in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 38
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.<>c__DisplayClass30_0`2.<<ExecuteAsync>b__0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteImplementationAsync[TState,TResult](Func`4 operation, Func`4 verifySucceeded, TState state, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.ExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.APPLICATION.Behaviors.TransactionPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.APPLICATION/Behaviors/TransactionPipelineBehavior.cs:line 31
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.PerformancePipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.APPLICATION.Behaviors.ValidationPipelineBehavior`2.Handle(TRequest request, RequestHandlerDelegate`1 next, CancellationToken cancellationToken)
+   at BEAUTIFY_AUTHORIZATION.PRESENTATION.APIs.Identity.AuthApi.LoginGoogleV1(ISender sender, LoginGoogleCommand login) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.PRESENTATION/APIs/Identity/AuthApi.cs:line 80
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.ExecuteTaskResult[T](Task`1 task, HttpContext httpContext)
+   at Microsoft.AspNetCore.Http.RequestDelegateFactory.<>c__DisplayClass102_2.<<HandleRequestBodyAndCompileRequestDelegateForJson>b__2>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at BEAUTIFY_AUTHORIZATION.API.Middlewares.ExceptionHandlingMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in /Users/user/Documents/WorkSpace/Beautify/BEAUTIFY_AUTHORIZATION/BEAUTIFY_AUTHORIZATION.API/Middlewares/ExceptionHandlingMiddleware.cs:line 18
