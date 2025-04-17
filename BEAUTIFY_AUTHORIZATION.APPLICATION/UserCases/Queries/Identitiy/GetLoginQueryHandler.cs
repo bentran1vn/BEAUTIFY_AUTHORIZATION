@@ -77,15 +77,14 @@ public class GetLoginQueryHandler(
         // If user not found, try staff
         if (user is null)
             return Result.Failure<dynamic>(new Error("404", "User Not Found"));
-        
+
         if (user.Status == 0)
             return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
 
         // Verify password and user status
-        if (!passwordHasherService.VerifyPassword(password, user.Password))
-            return Result.Failure<dynamic>(new Error("401", "Wrong password"));
-
-        return Result.Success<dynamic>(user);
+        return !passwordHasherService.VerifyPassword(password, user.Password)
+            ? Result.Failure<dynamic>(new Error("401", "Wrong password"))
+            : Result.Success<dynamic>(user);
     }
 
     /// <summary>
@@ -109,7 +108,7 @@ public class GetLoginQueryHandler(
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
         };
     }
-    
+
     /// <summary>
     /// Generates authentication response with tokens and caches it
     /// </summary>
@@ -128,7 +127,8 @@ public class GetLoginQueryHandler(
         {
             AccessToken = accessToken,
             RefreshToken = refreshToken,
-            RefreshTokenExpiryTime = DateTime.UtcNow.AddHours(15)
+            //  RefreshTokenExpiryTime = DateTime.UtcNow.AddHours(15)
+            RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(1)
         };
 
         // Configure cache options using request parameters or defaults
