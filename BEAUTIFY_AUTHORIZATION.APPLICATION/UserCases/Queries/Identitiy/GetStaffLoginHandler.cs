@@ -140,15 +140,32 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
         claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
 
         // Check if clinic is activated
-        if (mainClinicOwner.Clinic is { IsActivated: false })
+        if (mainClinicOwner.Clinic!.Status == 1 && !mainClinicOwner.Clinic.IsActivated)
             return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
         
-        claims.Add(new Claim("IsFirstLogin", (mainClinicOwner.Clinic?.IsFirstLogin == null ? "false" :
+        // Check if clinic is activated
+        if (mainClinicOwner.Clinic!.Status == 3)
+            return Result.Failure(new Error("500", "Your clinic is been banned, please contact with email"));
+
+        if (mainClinicOwner.Clinic!.Status == 1 && mainClinicOwner.Clinic.IsActivated)
+        {
+            claims.Add(new Claim("IsFirstLogin", (mainClinicOwner.Clinic?.IsFirstLogin == null ? "false" :
                 mainClinicOwner.Clinic.IsFirstLogin!.ToString())));
         
-        // Add subscription information
-        await AddSubscriptionClaimsAsync(claims, mainClinicOwner.ClinicId, cancellationToken);
-
+            // Add subscription information
+            await AddSubscriptionClaimsAsync(claims, mainClinicOwner.ClinicId, cancellationToken);
+        }
+        
+        if (mainClinicOwner.Clinic!.Status == 0)
+        {
+            return Result.Failure(new Error("500", "Your clinic apply is been receive, please wait"));
+        }
+        
+        if (mainClinicOwner.Clinic!.Status == 2)
+        {
+            claims.Add(new Claim("IsRejected", "true"));
+        }
+        
         return Result.Success();
     }
     
