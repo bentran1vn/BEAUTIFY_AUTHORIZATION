@@ -128,7 +128,7 @@ public class GetLoginQueryHandler(
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             //  RefreshTokenExpiryTime = DateTime.UtcNow.AddHours(15)
-            RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(1)
+            RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(1)
         };
 
         // Configure cache options using request parameters or defaults

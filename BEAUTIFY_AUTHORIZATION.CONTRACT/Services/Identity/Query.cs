@@ -11,8 +11,8 @@ public static class Query
 
         public string CacheKey { get; }
 
-        public int SlidingExpirationInMinutes => 10;
-        public int AbsoluteExpirationInMinutes => 15;
+        public int SlidingExpirationInMinutes => 500;
+        public int AbsoluteExpirationInMinutes => 500;
     };
 
     public record LoginGoolgeTest : IQuery<string>;
@@ -34,8 +34,8 @@ public static class Query
             }
         }
 
-        public int SlidingExpirationInMinutes => 10;
-        public int AbsoluteExpirationInMinutes => 15;
+        public int SlidingExpirationInMinutes => 500;
+        public int AbsoluteExpirationInMinutes => 500;
     }
 
     public record StaffLogin(string Email, string Password) : IQuery<Response.Authenticated>, ICacheable
@@ -53,8 +53,8 @@ public static class Query
             }
         }
 
-        public int SlidingExpirationInMinutes => 10;
-        public int AbsoluteExpirationInMinutes => 15;
+        public int SlidingExpirationInMinutes => 500;
+        public int AbsoluteExpirationInMinutes => 500;
     }
 
     public record Token(string AccessToken, string RefreshToken) : IQuery<Response.Authenticated>;

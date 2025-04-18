@@ -30,7 +30,7 @@ public class GetTokenQueryHandler(IJwtTokenService jwtTokenService, ICacheServic
         {
             AccessToken = accessToken,
             RefreshToken = cacheData.RefreshToken,
-            RefreshTokenExpiryTime = DateTime.Now.AddMinutes(5)
+            RefreshTokenExpiryTime = DateTime.Now.AddDays(1)
         };
 
         await cacheService.SetAsync($"Login-UserAccount:{userAccount}", response, null,
