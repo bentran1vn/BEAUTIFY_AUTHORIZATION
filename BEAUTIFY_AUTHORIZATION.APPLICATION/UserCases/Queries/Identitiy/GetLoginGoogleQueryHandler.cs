@@ -136,7 +136,7 @@ public sealed class GetLoginGoogleQueryHandler(
             RefreshToken = refreshToken,
             RefreshTokenExpiryTime = DateTime.UtcNow.AddHours(5) // Set expiry time to match token
         };
-        
+
         // Configure cache options using request parameters or defaults
         var slidingExpiration = request.SlidingExpirationInMinutes > 0 ? request.SlidingExpirationInMinutes : 10;
         var absoluteExpiration = request.AbsoluteExpirationInMinutes > 0 ? request.AbsoluteExpirationInMinutes : 15;
@@ -146,7 +146,7 @@ public sealed class GetLoginGoogleQueryHandler(
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(absoluteExpiration));
 
         // Cache the authentication response
-        var cacheKey = $"Login-UserAccount:{request.Email}";
+        var cacheKey = $"Login-UserAccount:{email}";
         await cacheService.SetAsync(cacheKey, response, options, cancellationToken);
 
         return Result.Success(response);
@@ -166,13 +166,14 @@ public sealed class GetLoginGoogleQueryHandler(
         // Trim and split the name
         var nameParts = fullName.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
-        // Handle edge cases
-        if (nameParts.Length == 0)
-            return ("", "");
-        if (nameParts.Length == 1)
-            return ("", nameParts[0]);
+        return nameParts.Length switch
+        {
+            // Handle edge cases
+            0 => ("", ""),
+            1 => ("", nameParts[0]),
+            _ => (string.Join(" ", nameParts[..^1]), nameParts[^1])
+        };
 
         // Last element is first name, everything else is last name
-        return (string.Join(" ", nameParts[..^1]), nameParts[^1]);
     }
 }
