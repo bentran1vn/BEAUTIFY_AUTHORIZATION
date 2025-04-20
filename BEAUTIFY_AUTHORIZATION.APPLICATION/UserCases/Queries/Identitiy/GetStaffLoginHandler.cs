@@ -78,6 +78,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
                 x.ProfilePicture,
                 x.Status,
                 x.PhoneNumber,
+                x.CreatedOnUtc,
                 Role = new
                 {
                     x.Role!.Id,
@@ -93,10 +94,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
             return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
 
         // Verify password and user status
-        if (!passwordHasherService.VerifyPassword(password, staff.Password))
-            return Result.Failure<dynamic>(new Error("401", "Wrong password"));
-
-        return Result.Success<dynamic>(staff);
+        return !passwordHasherService.VerifyPassword(password, staff.Password) ? Result.Failure<dynamic>(new Error("401", "Wrong password")) : Result.Success<dynamic>(staff);
     }
 
 
@@ -105,7 +103,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
     /// </summary>
     private static List<Claim> GenerateBaseClaims(dynamic user)
     {
-        return new List<Claim>(15) // Pre-allocate capacity for better performance
+        return new List<Claim>(16) // Pre-allocate capacity for better performance
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Role, user.Role.Name),
@@ -119,6 +117,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
             new("ProfilePicture", user.ProfilePicture ?? string.Empty),
             new("RoleName", user.Role.Name),
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
+            new("DateJoined", user.CreatedOnUtc.ToString("o")),
         };
     }
 

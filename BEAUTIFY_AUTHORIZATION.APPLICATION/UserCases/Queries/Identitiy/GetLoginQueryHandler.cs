@@ -65,6 +65,7 @@ public class GetLoginQueryHandler(
                 FullName = x.FirstName + " " + x.LastName,
                 x.ProfilePicture,
                 x.Status,
+                x.CreatedOnUtc,
                 x.PhoneNumber,
                 Role = new
                 {
@@ -92,7 +93,7 @@ public class GetLoginQueryHandler(
     /// </summary>
     private static List<Claim> GenerateBaseClaims(dynamic user)
     {
-        return new List<Claim>(15) // Pre-allocate capacity for better performance
+        return new List<Claim>(16) // Pre-allocate capacity for better performance
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Role, user.Role.Name),
@@ -106,6 +107,7 @@ public class GetLoginQueryHandler(
             new("ProfilePicture", user.ProfilePicture ?? string.Empty),
             new("RoleName", user.Role.Name),
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
+            new("DateJoined", user.CreatedOnUtc.ToString("o")),
         };
     }
 
