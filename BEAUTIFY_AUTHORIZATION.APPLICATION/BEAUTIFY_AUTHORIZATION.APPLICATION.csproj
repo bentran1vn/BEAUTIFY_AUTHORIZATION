@@ -8,13 +8,10 @@
 
     <ItemGroup>
       <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.11.4" />
       <PackageReference Include="Google.Apis.Auth" Version="1.69.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.CONTRACT\BEAUTIFY_AUTHORIZATION.CONTRACT.csproj" />
-      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.DOMAIN\BEAUTIFY_AUTHORIZATION.DOMAIN.csproj" />
       <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.PERSISTENCE\BEAUTIFY_AUTHORIZATION.PERSISTENCE.csproj" />
     </ItemGroup>
 

@@ -51,15 +51,15 @@ public class ChangePasswordStaffCommandHandler(
         {
             if (request.WorkingTimeEnd != null || request.WorkingTimeStart != null)
             {
-                if (!(request.WorkingTimeEnd != null && request.WorkingTimeStart != null))
+                if (request is not { WorkingTimeEnd: not null, WorkingTimeStart: not null })
                 {
                     throw new Exception("WorkingTimeStart and WorkingTimeEnd must appear same !");
                 }
             }
             
-            if (clinic.IsFirstLogin != null && clinic.IsFirstLogin == true)
+            if (clinic.IsFirstLogin is true)
             {
-                if (!(request.WorkingTimeEnd != null && request.WorkingTimeStart != null))
+                if (request is not { WorkingTimeEnd: not null, WorkingTimeStart: not null })
                 {
                     throw new Exception("WorkingTimeStart and WorkingTimeEnd must be set in the first login !");
                 }
@@ -107,9 +107,6 @@ public class ChangePasswordStaffCommandHandler(
             return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
 
         // Verify password and user status
-        if (!passwordHasherService.VerifyPassword(password, staff.Password))
-            return Result.Failure<dynamic>(new Error("401", "Wrong password"));
-
-        return Result.Success<dynamic>(staff);
+        return !passwordHasherService.VerifyPassword(password, staff.Password) ? Result.Failure<dynamic>(new Error("401", "Wrong password")) : Result.Success<dynamic>(staff);
     }
 }

@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.11.4" />
+      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.CONTRACT\BEAUTIFY_AUTHORIZATION.CONTRACT.csproj" />
     </ItemGroup>
 
     <ItemGroup>

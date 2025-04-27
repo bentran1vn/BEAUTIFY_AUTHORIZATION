@@ -138,33 +138,28 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
 
         claims.Add(new Claim("ClinicId", mainClinicOwner.ClinicId.ToString()));
 
-        // Check if clinic is activated
-        if (mainClinicOwner.Clinic!.Status == 1 && !mainClinicOwner.Clinic.IsActivated)
-            return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
+        switch (mainClinicOwner.Clinic!.Status)
+        {
+            // Check if clinic is activated
+            case 1 when !mainClinicOwner.Clinic.IsActivated:
+                return Result.Failure(new Error("404", "Your clinic is not activated, please contact with email"));
+            // Check if clinic is activated
+            case 3:
+                return Result.Failure(new Error("500", "Your clinic is been banned, please contact with email"));
+            case 1 when mainClinicOwner.Clinic.IsActivated:
+                claims.Add(new Claim("IsFirstLogin", (mainClinicOwner.Clinic?.IsFirstLogin == null ? "false" :
+                    mainClinicOwner.Clinic.IsFirstLogin!.ToString())));
         
-        // Check if clinic is activated
-        if (mainClinicOwner.Clinic!.Status == 3)
-            return Result.Failure(new Error("500", "Your clinic is been banned, please contact with email"));
+                // Add subscription information
+                await AddSubscriptionClaimsAsync(claims, mainClinicOwner.ClinicId, cancellationToken);
+                break;
+            case 0:
+                return Result.Failure(new Error("500", "Your clinic apply is been receive, please wait"));
+            case 2:
+                claims.Add(new Claim("IsRejected", "true"));
+                break;
+        }
 
-        if (mainClinicOwner.Clinic!.Status == 1 && mainClinicOwner.Clinic.IsActivated)
-        {
-            claims.Add(new Claim("IsFirstLogin", (mainClinicOwner.Clinic?.IsFirstLogin == null ? "false" :
-                mainClinicOwner.Clinic.IsFirstLogin!.ToString())));
-        
-            // Add subscription information
-            await AddSubscriptionClaimsAsync(claims, mainClinicOwner.ClinicId, cancellationToken);
-        }
-        
-        if (mainClinicOwner.Clinic!.Status == 0)
-        {
-            return Result.Failure(new Error("500", "Your clinic apply is been receive, please wait"));
-        }
-        
-        if (mainClinicOwner.Clinic!.Status == 2)
-        {
-            claims.Add(new Claim("IsRejected", "true"));
-        }
-        
         return Result.Success();
     }
     

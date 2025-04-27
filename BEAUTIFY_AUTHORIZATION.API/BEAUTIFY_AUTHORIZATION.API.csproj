@@ -10,7 +10,6 @@
     <ItemGroup>
         <PackageReference Include="Asp.Versioning.Http" Version="8.1.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
-        <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.11.4" />
         <PackageReference Include="Carter" Version="8.1.0" />
         <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="6.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.7" />
@@ -21,14 +20,12 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="7.2.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.APPLICATION\BEAUTIFY_AUTHORIZATION.APPLICATION.csproj" />
       <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE\BEAUTIFY_AUTHORIZATION.INFRASTRUCTURE.csproj" />
-      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.PRESENTATION\BEAUTIFY_AUTHORIZATION.PRESENTATION.csproj" />
     </ItemGroup>
 
     <ItemGroup>

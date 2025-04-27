@@ -10,6 +10,7 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Commands.Identity;
 public class RegisterCommandHandler(
     IRepositoryBase<User, Guid> userRepository,
+    IRepositoryBase<Staff, Guid> staffRepository,
     IPasswordHasherService passwordHasherService,
     IMailService mailService,
     ICacheService cacheService,
@@ -21,8 +22,10 @@ public class RegisterCommandHandler(
         var userExisted =
             await userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email) || x.PhoneNumber.Equals(request.PhoneNumber), cancellationToken);
-
-        if (userExisted is not null && userExisted.Status == 1)
+        var staffExisted =
+            await staffRepository.FindSingleAsync(x =>
+                x.Email.Equals(request.Email) || x.PhoneNumber.Equals(request.PhoneNumber), cancellationToken);
+        if (staffExisted is not null && staffExisted.Status == 1 || userExisted is not null && userExisted.Status == 1)
         {
             return Result.Failure(new Error("400", "Email or phone number already exists"));
         }
