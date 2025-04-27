@@ -20,7 +20,7 @@ public class GetStaffLoginHandler(IJwtTokenService jwtTokenService,
     IRepositoryBase<SubscriptionPackage, Guid> subscriptionPackageRepository) : IQueryHandler<Query.StaffLogin, Response.Authenticated>
 {
     // Cache clinic role names for better performance
-    private static readonly string[] ClinicRoles = [Constant.Role.CLINIC_ADMIN, Constant.Role.CLINIC_STAFF];
+    private static readonly string[] ClinicRoles = [Constant.Role.CLINIC_ADMIN, Constant.Role.CLINIC_STAFF,  Constant.Role.DOCTOR];
     
     public async Task<Result<Response.Authenticated>> Handle(Query.StaffLogin request, CancellationToken cancellationToken)
     {

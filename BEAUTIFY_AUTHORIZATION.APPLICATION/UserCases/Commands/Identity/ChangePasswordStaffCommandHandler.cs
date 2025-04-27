@@ -66,6 +66,7 @@ public class ChangePasswordStaffCommandHandler(
 
                 clinic.WorkingTimeStart = request.WorkingTimeStart;
                 clinic.WorkingTimeEnd = request.WorkingTimeEnd;
+                clinic.IsFirstLogin = false;
                 
                 clinicRepository.Update(clinic);
             }
