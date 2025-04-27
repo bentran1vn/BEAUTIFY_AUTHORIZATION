@@ -7,11 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="BEAUTIFY_PACKAGES.SHARE" Version="1.11.4" />
       <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.10" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\BEAUTIFY_AUTHORIZATION.APPLICATION\BEAUTIFY_AUTHORIZATION.APPLICATION.csproj" />
     </ItemGroup>
 
     <ItemGroup>
