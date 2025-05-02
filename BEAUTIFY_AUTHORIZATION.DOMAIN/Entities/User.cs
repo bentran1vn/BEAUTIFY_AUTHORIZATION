@@ -34,14 +34,15 @@ public class User : AggregateRoot<Guid>, IAuditableEntity
     [MaxLength(100)] public string? Address { get; set; }
 
     [MaxLength(250)] public string? FullAddress => $"{Address}, {Ward}, {District}, {City}".Trim(',', ' ', '\n');
-    
-     [Column(TypeName = "decimal(18,2)")] public decimal Balance { get; set; }=0;
+
+    [Column(TypeName = "decimal(18,2)")] public decimal Balance { get; set; } = 0;
     [MaxLength(250)] public string? RefreshToken { get; set; }
 
 
     public virtual ICollection<UserConversation>? UserConversations { get; set; }
     public virtual ICollection<CustomerSchedule>? CustomerSchedules { get; set; }
     public virtual ICollection<Order>? Orders { get; set; }
+    
     public DateTimeOffset CreatedOnUtc { get; set; }
     public DateTimeOffset? ModifiedOnUtc { get; set; }
 }

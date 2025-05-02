@@ -10,6 +10,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace BEAUTIFY_AUTHORIZATION.APPLICATION.UserCases.Queries.Identitiy;
+
+// Adding a strongly-typed DTO for user information
+public sealed record AuthUserDto
+{
+    public Guid UserId { get; init; }
+    public string Email { get; init; } = string.Empty;
+    public string Password { get; init; } = string.Empty;
+    public string FullName { get; init; } = string.Empty;
+    public string? ProfilePicture { get; init; }
+    public int Status { get; init; }
+    public DateTimeOffset CreatedOnUtc { get; init; }
+    public string? PhoneNumber { get; init; }
+    public bool HasSurvey { get; set; }
+    public UserRoleDto Role { get; init; } = null!;
+}
+
+public sealed record UserRoleDto
+{
+    public Guid Id { get; init; }
+    public string Name { get; init; } = string.Empty;
+}
+
 /// <summary>
 /// Handles user login authentication and token generation
 /// </summary>
@@ -17,6 +39,7 @@ public class GetLoginQueryHandler(
     IJwtTokenService jwtTokenService,
     ICacheService cacheService,
     IRepositoryBase<User, Guid> userRepository,
+    IRepositoryBase<SurveyResponse, Guid> surveyResponseRepository,
     IPasswordHasherService passwordHasherService)
     : IQueryHandler<Query.Login, Response.Authenticated>
 {
@@ -34,6 +57,9 @@ public class GetLoginQueryHandler(
                 return Result.Failure<Response.Authenticated>(authenticatedUser.Error);
 
             var user = authenticatedUser.Value;
+            if (await surveyResponseRepository.FindSingleAsync(x => x.CustomerId == user.UserId, cancellationToken) !=
+                null)
+                user.HasSurvey = true;
 
             // Generate claims for the authenticated user
             var claims = GenerateBaseClaims(user);
@@ -51,49 +77,50 @@ public class GetLoginQueryHandler(
     /// <summary>
     /// Finds and authenticates a user by email and password
     /// </summary>
-    private async Task<Result<dynamic>> FindAuthenticatedUserAsync(string normalizedEmail, string password,
+    private async Task<Result<AuthUserDto>> FindAuthenticatedUserAsync(string normalizedEmail, string password,
         CancellationToken cancellationToken)
     {
         // Try to find user first
         var user = await userRepository
             .FindAll(x => EF.Functions.Like(x.Email.ToLower(), normalizedEmail) && !x.IsDeleted)
-            .Select(x => new
+            .Select(x => new AuthUserDto
             {
                 UserId = x.Id,
-                x.Email,
-                x.Password,
+                Email = x.Email,
+                Password = x.Password,
                 FullName = x.FirstName + " " + x.LastName,
-                x.ProfilePicture,
-                x.Status,
-                x.CreatedOnUtc,
-                x.PhoneNumber,
-                Role = new
+                ProfilePicture = x.ProfilePicture,
+                Status = x.Status,
+                CreatedOnUtc = x.CreatedOnUtc,
+                PhoneNumber = x.PhoneNumber,
+                HasSurvey = false,
+                Role = new UserRoleDto
                 {
-                    x.Role!.Id,
-                    x.Role.Name
+                    Id = x.Role!.Id,
+                    Name = x.Role.Name
                 }
             })
             .FirstOrDefaultAsync(cancellationToken);
 
         // If user not found, try staff
         if (user is null)
-            return Result.Failure<dynamic>(new Error("404", "User Not Found"));
+            return Result.Failure<AuthUserDto>(new Error("404", "User Not Found"));
 
         if (user.Status == 0)
-            return Result.Failure<dynamic>(new Error("400", "User Not Verified"));
+            return Result.Failure<AuthUserDto>(new Error("400", "User Not Verified"));
 
         // Verify password and user status
         return !passwordHasherService.VerifyPassword(password, user.Password)
-            ? Result.Failure<dynamic>(new Error("401", "Wrong password"))
-            : Result.Success<dynamic>(user);
+            ? Result.Failure<AuthUserDto>(new Error("401", "Wrong password"))
+            : Result.Success(user);
     }
 
     /// <summary>
     /// Generates base claims for the authenticated user
     /// </summary>
-    private static List<Claim> GenerateBaseClaims(dynamic user)
+    private static List<Claim> GenerateBaseClaims(AuthUserDto user)
     {
-        return new List<Claim>(16) // Pre-allocate capacity for better performance
+        return new List<Claim>(17) // Pre-allocate capacity for better performance
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Role, user.Role.Name),
@@ -108,6 +135,7 @@ public class GetLoginQueryHandler(
             new("RoleName", user.Role.Name),
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
             new("DateJoined", user.CreatedOnUtc.ToString("o")),
+            new("HasSurvey", user.HasSurvey.ToString()),
         };
     }
 

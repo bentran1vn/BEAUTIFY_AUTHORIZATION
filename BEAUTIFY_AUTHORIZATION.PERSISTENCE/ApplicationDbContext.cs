@@ -5,6 +5,7 @@ namespace BEAUTIFY_AUTHORIZATION.PERSISTENCE;
 
 public class ApplicationDbContext : DbContext
 {
+    public DbSet<SurveyResponse> SurveyResponses { get; set; } = null!;
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
