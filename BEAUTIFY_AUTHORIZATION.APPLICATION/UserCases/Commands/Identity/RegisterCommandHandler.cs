@@ -94,7 +94,7 @@ public class RegisterCommandHandler(
             .SetSlidingExpiration(TimeSpan.FromSeconds(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromSeconds(absoluteExpiration));
 
-        await mailService.SendMail(new MailContent
+        _ = mailService.SendMail(new MailContent
         {
             To = request.Email,
             Subject = $"Register Verify Code",
