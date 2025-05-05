@@ -17,10 +17,6 @@ public class ChangePasswordCommandHandler(
         var user =
             await userRepository.FindSingleAsync(x =>
                 x.Email.Equals(request.Email), cancellationToken);
-        if (!passwordHasherService.VerifyPassword(request.OldPassword, user.Password))
-        {
-            return Result.Failure(new Error("400", "Old Password is not correct !"));
-        }
 
         if (user is null)
         {

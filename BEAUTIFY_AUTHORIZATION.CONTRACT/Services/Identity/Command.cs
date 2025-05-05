@@ -22,22 +22,20 @@ public static class Command
 
     public record ChangePasswordCommand(
         string Email,
-        string NewPassword,
-        string OldPassword
+        string NewPassword
     ) : ICommand;
 
     public record ChangePasswordCommandBody(
-        string NewPassword,
-        string OldPassword
+        string NewPassword
     );
-
+    
     public record ChangePasswordStaffCommandBody(
         string NewPassword,
         string OldPassword,
         TimeSpan? WorkingTimeStart,
         TimeSpan? WorkingTimeEnd
     );
-
+    
     public record ChangePasswordStaffCommand(
         string Email,
         string OldPassword,
