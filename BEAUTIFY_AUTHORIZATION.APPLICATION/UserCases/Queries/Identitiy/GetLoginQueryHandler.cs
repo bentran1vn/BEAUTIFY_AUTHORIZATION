@@ -108,6 +108,9 @@ public class GetLoginQueryHandler(
 
         if (user.Status == 0)
             return Result.Failure<AuthUserDto>(new Error("400", "User Not Verified"));
+        
+        if (user.Status == 3)
+            return Result.Failure<AuthUserDto>(new Error("400", "User Banned"));
 
         // Verify password and user status
         return !passwordHasherService.VerifyPassword(password, user.Password)
@@ -137,11 +140,6 @@ public class GetLoginQueryHandler(
             new("DateJoined", user.CreatedOnUtc.ToString("o")),
             new("HasSurvey", user.HasSurvey.ToString()),
         };
-
-        if (user.Status == 3)
-        {
-            claims.Add(new("IsBanned", "true"));
-        }
 
         return claims;
     }
