@@ -88,13 +88,13 @@ public class RegisterCommandHandler(
         var random = new Random();
         var randomNumber = random.Next(0, 100000).ToString("D5");
 
-        var slidingExpiration = 60;
-        var absoluteExpiration = 60;
+        var slidingExpiration = 600;
+        var absoluteExpiration = 600;
         var options = new DistributedCacheEntryOptions()
             .SetSlidingExpiration(TimeSpan.FromSeconds(slidingExpiration))
             .SetAbsoluteExpiration(TimeSpan.FromSeconds(absoluteExpiration));
 
-        await mailService.SendMail(new MailContent
+        _ = mailService.SendMail(new MailContent
         {
             To = request.Email,
             Subject = $"Register Verify Code",
