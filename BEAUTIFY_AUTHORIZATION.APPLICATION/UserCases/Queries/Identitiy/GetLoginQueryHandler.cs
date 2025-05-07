@@ -120,7 +120,7 @@ public class GetLoginQueryHandler(
     /// </summary>
     private static List<Claim> GenerateBaseClaims(AuthUserDto user)
     {
-        return new List<Claim>(17) // Pre-allocate capacity for better performance
+        var claims =  new List<Claim>(17) // Pre-allocate capacity for better performance
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Role, user.Role.Name),
@@ -137,6 +137,13 @@ public class GetLoginQueryHandler(
             new("DateJoined", user.CreatedOnUtc.ToString("o")),
             new("HasSurvey", user.HasSurvey.ToString()),
         };
+
+        if (user.Status == 3)
+        {
+            claims.Add(new("IsBanned", "true"));
+        }
+
+        return claims;
     }
 
     /// <summary>
