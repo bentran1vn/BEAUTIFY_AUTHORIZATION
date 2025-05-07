@@ -93,7 +93,7 @@ public class GetLoginQueryHandler(
     /// </summary>
     private static List<Claim> GenerateBaseClaims(dynamic user)
     {
-        return new List<Claim>(16) // Pre-allocate capacity for better performance
+        var claimList =  new List<Claim>(16) // Pre-allocate capacity for better performance
         {
             new(ClaimTypes.Email, user.Email),
             new(ClaimTypes.Role, user.Role.Name),
@@ -109,6 +109,13 @@ public class GetLoginQueryHandler(
             new("PhoneNumber", user.PhoneNumber ?? string.Empty),
             new("DateJoined", user.CreatedOnUtc.ToString("o")),
         };
+
+        if (user.Status == 3)
+        {
+            claimList.Add(new("IsBanned", "true"));
+        }
+
+        return claimList;
     }
 
     /// <summary>
