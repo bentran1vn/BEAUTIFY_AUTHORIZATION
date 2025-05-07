@@ -1,3 +1,4 @@
+using BEAUTIFY_AUTHORIZATION.PERSISTENCE.Interceptors;
 using BEAUTIFY_AUTHORIZATION.PERSISTENCE.Repositories;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.DOMAIN.Abstractions.Repositories;
 using BEAUTIFY_PACKAGES.BEAUTIFY_PACKAGES.PERSISTENCE.DependencyInjection.Options;
@@ -15,7 +16,8 @@ public static class ServiceCollectionExtensions
         services.AddDbContextPool<DbContext, ApplicationDbContext>((provider, builder) =>
         {
             // Interceptor
-
+            var auditableInterceptor = provider.GetService<UpdateAuditableEntitiesInterceptor>();
+            var deletableInterceptor = provider.GetService<DeleteAuditableEntitiesInterceptor>();
 
             var configuration = provider.GetRequiredService<IConfiguration>();
             var options = provider.GetRequiredService<IOptionsMonitor<SqlServerRetryOptions>>();
@@ -35,9 +37,8 @@ public static class ServiceCollectionExtensions
                                     maxRetryCount: options.CurrentValue.MaxRetryCount,
                                     maxRetryDelay: options.CurrentValue.MaxRetryDelay,
                                     errorNumbersToAdd: options.CurrentValue.ErrorNumbersToAdd))
-                            .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name));
-
-
+                            .MigrationsAssembly(typeof(ApplicationDbContext).Assembly.GetName().Name)
+            ).AddInterceptors(auditableInterceptor, deletableInterceptor);
 
             // => If UseLazyLoadingProxies, all of the navigation fields should be VIRTUAL
 
@@ -58,7 +59,12 @@ public static class ServiceCollectionExtensions
             #endregion ============== SQL-SERVER-STRATEGY-2 ==============
         });
     }
-
+    
+    public static void AddInterceptorPersistence(this IServiceCollection services)
+    {
+        services.AddSingleton<UpdateAuditableEntitiesInterceptor>();
+        services.AddSingleton<DeleteAuditableEntitiesInterceptor>();
+    }
 
     public static void AddRepositoryPersistence(this IServiceCollection services)
     {

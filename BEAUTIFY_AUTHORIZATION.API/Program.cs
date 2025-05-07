@@ -49,6 +49,7 @@ builder.Services.AddAutoMapperApplication();
 builder.Services.ConfigureSqlServerRetryOptionsPersistence(builder.Configuration.GetSection(nameof(SqlServerRetryOptions)));
 builder.Services.AddSqlServerPersistence();
 builder.Services.AddRepositoryPersistence();
+builder.Services.AddInterceptorPersistence();
 
 // Infrastructure Layer
 builder.Services.AddServicesInfrastructure();
