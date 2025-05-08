@@ -17,19 +17,20 @@ public class RegisterCommandValidators : AbstractValidator<Command.RegisterComma
             // .Matches(@"[a-z]").WithMessage("Password must contain at least one lowercase letter")
             //  .Matches(@"\d").WithMessage("Password must contain at least one digit")
             //  .Matches(@"[\W_]").WithMessage("Password must contain at least one special character");
+            
         RuleFor(x => x.FirstName)
             .NotEmpty()
             .MinimumLength(2).WithMessage("First name must be at least 2 characters long")
-            .MaximumLength(30).WithMessage("First name must exceed 30 characters")
-            .Matches("^[^@\\-#!$%^&*()_+~{}|:\"<>?0-9]+$")
-            .WithMessage("First name must contain only letters (including accented and special characters)");
+            .MaximumLength(30).WithMessage("First name must not exceed 30 characters")
+            .Matches(@"^[\p{L}\s]+$")
+            .WithMessage("First name must contain only letters and spaces");
 
         RuleFor(x => x.LastName)
             .NotEmpty()
             .MinimumLength(2).WithMessage("Last name must be at least 2 characters long")
-            .MaximumLength(30).WithMessage("Last name must exceed 30 characters")
-            .Matches(@"^[^@\-#!$%^&*()_+~{}|:""<>?0-9]+$")
-            .WithMessage("Last name must contain only letters (including accented and special characters)");
+            .MaximumLength(30).WithMessage("Last name must not exceed 30 characters")
+            .Matches(@"^[\p{L}\s]+$")
+            .WithMessage("Last name must contain only letters and spaces");
 
 
         RuleFor(x => x.DateOfBirth)
